@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "21551772525",
+    "project_id": "qr-guard",
+    "storage_bucket": "qr-guard.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:21551772525:android:7f9312135ce52e34ec2064",
+        "android_client_info": {
+          "package_name": "dev.digitaldreamweavers.qrguard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-rmEwz2SU6GQ9wDqib27IiEb-TFFVY8U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
