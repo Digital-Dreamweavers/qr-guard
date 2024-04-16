@@ -12,7 +12,12 @@
           "package_name": "dev.digitaldreamweavers.qrguard"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "21551772525-o38mt7ou2p4ck41slu5a5hti432brjs7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC-rmEwz2SU6GQ9wDqib27IiEb-TFFVY8U"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "21551772525-o38mt7ou2p4ck41slu5a5hti432brjs7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
