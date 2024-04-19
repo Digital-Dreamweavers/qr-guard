@@ -3,13 +3,14 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
+    <string name="text_welcome">Welcome to QR Guard</string>
+    <string name="text_protect_yourself">Protect yourself from phishing. QR Guard checks QR codes against a crowdsourced database of safety reports.</string>
+    <string name="text_locate_nearby">Locate nearby QR Codes. See safety reports and reviews of nearby scans on a map. Be alerted of recent unsafe reviews in your area.</string>
+    <string name="text_help_keep_area_safe">Help keep your area cybersafe. Review and provide safety ratings of your scans to build our safety database. Take down malicious QR codes.</string>
+    <string name="button_connect_google">Connect with Google</string>
+    <string name="image_qr_code">qr_code_image</string>
+    <string name="image_shield">shield_image</string>
+    <string name="image_alert">alert_image</string>
+    <string name="image_comment">comment_image</string>
+    <string name="default_web_client_id">YOUR_DEFAULT_WEB_CLIENT_ID</string>
 </resources>

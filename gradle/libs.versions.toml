@@ -12,7 +12,9 @@ navigationFragment = "2.6.0"
 navigationUi = "2.6.0"
 googleServices = "4.4.1"
 firebaseAuth = "22.3.1"
-annotation = "1.7.1"
+firebaseBom = "32.8.1"
+playServicesAuth = "21.0.0"
+firebaseFirestore = "24.11.1"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -27,7 +29,9 @@ navigation-fragment = { group = "androidx.navigation", name = "navigation-fragme
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
 google-services = { group = "com.google.gms", name = "google-services", version.ref = "googleServices" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
