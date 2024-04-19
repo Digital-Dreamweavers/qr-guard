@@ -44,12 +44,20 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.annotation)
     implementation(libs.firebase.analytics)
-    implementation(libs.barcode.scanning)
-    implementation(libs.camera.view)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
     implementation(platform(libs.firebase.bom))
+
+    // CameraX libraries
+    implementation(libs.camera.core)
+    implementation(libs.camera.camera2)
+    implementation(libs.camera.lifecycle)
+    implementation(libs.camera.view)
+    implementation(libs.camera.extensions)
+
+    // MlKit Barcode Scanner: Required for QR functions
+    implementation(libs.mlkit.barcode)
 
 }
