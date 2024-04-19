@@ -44,12 +44,12 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.annotation)
     implementation(libs.firebase.analytics)
+    implementation(libs.barcode.scanning)
+    implementation(libs.camera.view)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
     implementation(platform(libs.firebase.bom))
-
-    implementation(libs.quickie.bundled)
 
 }
