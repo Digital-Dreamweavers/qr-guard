@@ -7,7 +7,7 @@
     <string name="text_protect_yourself">Protect yourself from phishing. QR Guard checks QR codes against a crowdsourced database of safety reports.</string>
     <string name="text_locate_nearby">Locate nearby QR Codes. See safety reports and reviews of nearby scans on a map. Be alerted of recent unsafe reviews in your area.</string>
     <string name="text_help_keep_area_safe">Help keep your area cybersafe. Review and provide safety ratings of your scans to build our safety database. Take down malicious QR codes.</string>
-    <string name="button_connect_google">Connect with Google</string>
+    <string name="button_connect_google">Continue with Google</string>
     <string name="image_qr_code">qr_code_image</string>
     <string name="image_shield">shield_image</string>
     <string name="image_alert">alert_image</string>
