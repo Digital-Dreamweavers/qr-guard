@@ -1,6 +1,7 @@
 plugins {
     id("com.google.gms.google-services")
     alias(libs.plugins.androidApplication)
+    alias(libs.plugins.googleAndroidLibrariesMapsplatformSecretsGradlePlugin)
 }
 
 android {
@@ -46,6 +47,7 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.annotation)
     implementation(libs.firebase.analytics)
+    implementation(libs.play.services.maps)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
