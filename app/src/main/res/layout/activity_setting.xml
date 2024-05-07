@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.setting.SettingActivity">
+
+    <TextView
+        android:id="@+id/text_setting"
+        android:layout_width="match_parent"
+        android:layout_height="79dp"
+        android:background="?attr/colorPrimary"
+        android:padding="16dp"
+        android:text="@string/settings"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <LinearLayout
+        android:layout_width="326dp"
+        android:layout_height="574dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <TextView
+            android:id="@+id/setting_head"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:text="@string/Setting_head"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:drawableTint="?attr/colorPrimary"
+            app:drawableTopCompat="@drawable/ic_round_qr_code_scanner_24" />
+
+        <TextView
+            android:id="@+id/version_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:drawablePadding="10dp"
+            android:text="@string/version_text"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="18sp"
+            app:drawableTint="?attr/colorPrimary" />
+
+        <TextView
+            android:id="@+id/developer_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:drawablePadding="10dp"
+            android:text="@string/developer_text"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="18sp"
+            app:drawableTint="?attr/colorPrimary" />
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
