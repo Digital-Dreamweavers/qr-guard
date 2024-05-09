@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "21551772525",
+    "firebase_url": "https://qr-guard-default-rtdb.firebaseio.com",
     "project_id": "qr-guard",
     "storage_bucket": "qr-guard.appspot.com"
   },
@@ -14,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "21551772525-o38mt7ou2p4ck41slu5a5hti432brjs7.apps.googleusercontent.com",
+          "client_id": "21551772525-aj6ralvqu15uj2qsmai514huif908uem.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.digitaldreamweavers.qrguard",
+            "certificate_hash": "4d64ec1a880b97ab82d9f1e75ea62dbaea692ca1"
+          }
+        },
+        {
+          "client_id": "21551772525-9rug5mlm9jrrjjpu6630tvj0fjloa80r.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,7 +36,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "21551772525-o38mt7ou2p4ck41slu5a5hti432brjs7.apps.googleusercontent.com",
+              "client_id": "21551772525-9rug5mlm9jrrjjpu6630tvj0fjloa80r.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
