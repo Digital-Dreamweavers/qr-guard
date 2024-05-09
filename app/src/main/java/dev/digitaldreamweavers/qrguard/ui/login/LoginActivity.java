@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import dev.digitaldreamweavers.qrguard.R;
-import dev.digitaldreamweavers.qrguard.ui.profile.ProfileActivity;
+
 public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 9001;
@@ -42,8 +42,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
