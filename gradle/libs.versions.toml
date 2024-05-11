@@ -1,5 +1,5 @@
 [versions]
-agp = "8.3.2"
+agp = "8.4.0"
 firebaseBom = "32.8.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
@@ -25,6 +25,7 @@ firebaseInappmessagingDisplay = "21.0.0"
 firebaseMessaging = "24.0.0"
 appcompatV7 = "28.0.0"
 playServicesLocation = "21.2.0"
+legacySupportV4 = "1.0.0"
 
 [libraries]
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
@@ -55,6 +56,7 @@ firebase-inappmessaging-display = { group = "com.google.firebase", name = "fireb
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
 appcompat-v7 = { group = "com.android.support", name = "appcompat-v7", version.ref = "appcompatV7" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
