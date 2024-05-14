@@ -50,7 +50,6 @@ dependencies {
     implementation(libs.play.services.maps)
     implementation(libs.firebase.inappmessaging.display)
     implementation(libs.firebase.messaging)
-    implementation(libs.appcompat.v7)
     implementation(libs.play.services.location)
     implementation(libs.legacy.support.v4)
     testImplementation(libs.junit)
