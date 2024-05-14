@@ -27,6 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.HashMap;
 import java.util.Map;
 
+import dev.digitaldreamweavers.qrguard.MainActivity;
 import dev.digitaldreamweavers.qrguard.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -90,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // Authenticate with Firebase using the Google token
+    // Authenticate with Firebase using the Google token
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
@@ -102,6 +104,9 @@ public class LoginActivity extends AppCompatActivity {
                         if (user != null) {
                             // Add user data to Firestore
                             createUserInFirestore(user.getEmail());
+
+                            // Start MainActivity
+                            startMainActivity();
                         }
                     } else {
                         // If sign in fails, display a message to the user.
@@ -111,6 +116,14 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    // Start MainActivity
+    private void startMainActivity() {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish(); // Finish LoginActivity to prevent the user from going back to it after logging in
+    }
+
 
     // Update UI based on FirebaseUser
     private void updateUI(FirebaseUser user) {

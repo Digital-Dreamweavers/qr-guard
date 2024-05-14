@@ -65,6 +65,8 @@ dependencies {
     implementation(libs.camera.view)
     implementation(libs.camera.extensions)
 
+
+
     // MlKit Barcode Scanner: Required for QR functions
     implementation(libs.mlkit.barcode)
 

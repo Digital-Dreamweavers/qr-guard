@@ -97,6 +97,18 @@ public class MainActivity extends AppCompatActivity {
             }
             }, ContextCompat.getMainExecutor(this));
 
+        cameraProviderFuture = ProcessCameraProvider.getInstance(this);
+
+        // Bind camera to listener.
+        cameraProviderFuture.addListener(() -> {
+            try {
+                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+                bindPreview(cameraProvider);
+            } catch (ExecutionException | InterruptedException e) {
+                Log.w(TAG, "Could not add Camera Listener: ", e);
+            }
+        }, ContextCompat.getMainExecutor(this));
+
         // Create a Toast object
         Toast toast = Toast.makeText(this, "Camera starts here.", Toast.LENGTH_SHORT);
 
@@ -107,3 +119,4 @@ public class MainActivity extends AppCompatActivity {
 
 
 }
+
