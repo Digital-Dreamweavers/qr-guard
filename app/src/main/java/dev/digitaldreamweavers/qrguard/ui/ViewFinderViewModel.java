@@ -1,4 +1,4 @@
-package dev.digitaldreamweavers.qrguard;
+package dev.digitaldreamweavers.qrguard.ui;
 
 import androidx.lifecycle.ViewModel;
 

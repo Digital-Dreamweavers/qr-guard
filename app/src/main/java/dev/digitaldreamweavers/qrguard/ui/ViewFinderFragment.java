@@ -1,4 +1,4 @@
-package dev.digitaldreamweavers.qrguard;
+package dev.digitaldreamweavers.qrguard.ui;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import dev.digitaldreamweavers.qrguard.R;
 
 public class ViewFinderFragment extends Fragment {
 
