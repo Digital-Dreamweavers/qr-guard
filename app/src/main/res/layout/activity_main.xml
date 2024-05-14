@@ -11,14 +11,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <androidx.camera.view.PreviewView
-            android:id="@+id/viewFinder"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="3">
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:id="@+id/cameraContainer"
+            >
+            <androidx.camera.view.PreviewView
+                android:id="@+id/viewFinder"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                >
 
-        </androidx.camera.view.PreviewView>
+            </androidx.camera.view.PreviewView>
+        </FrameLayout>
+
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:layout_width="match_parent"
