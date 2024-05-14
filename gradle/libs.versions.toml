@@ -23,7 +23,6 @@ googleAndroidLibrariesMapsplatformSecretsGradlePlugin = "2.0.1"
 playServicesMaps = "18.2.0"
 firebaseInappmessagingDisplay = "21.0.0"
 firebaseMessaging = "24.0.0"
-appcompatV7 = "28.0.0"
 playServicesLocation = "21.2.0"
 legacySupportV4 = "1.0.0"
 
