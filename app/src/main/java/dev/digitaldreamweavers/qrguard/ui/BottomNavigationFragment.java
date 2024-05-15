@@ -87,17 +87,17 @@ public class BottomNavigationFragment extends Fragment {
 
     private void navigateToMapActivity() {
         Intent intent = new Intent(getActivity(), MapsActivity.class);
-        startActivity(intent);
+        getActivity().startActivity(intent);
     }
 
     private void navigateToCameraActivity() {
         Intent intent = new Intent(getActivity(), MainActivity.class);
-        startActivity(intent);
+        getActivity().startActivity(intent);
     }
 
     private void navigateToProfileActivity() {
         Intent intent = new Intent(getActivity(), ProfileActivity.class);
-        startActivity(intent);
+        getActivity().startActivity(intent);
     }
 }
 
