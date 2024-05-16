@@ -1,27 +1,23 @@
 package dev.digitaldreamweavers.qrguard;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.util.Log;
-import android.widget.Toast;
-
 import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
-import com.google.common.util.concurrent.ListenableFuture;
-
 import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -29,6 +25,7 @@ import java.util.concurrent.ExecutorService;
 import dev.digitaldreamweavers.qrguard.databinding.ActivityMainBinding;
 import dev.digitaldreamweavers.qrguard.ui.ViewFinderFragment;
 import dev.digitaldreamweavers.qrguard.ui.ViewFinderViewModel;
+import dev.digitaldreamweavers.qrguard.ui.login.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,18 +38,33 @@ public class MainActivity extends AppCompatActivity {
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private ViewFinderViewModel viewFinderModel;
 
-    private String TAG = "MainActivity";
+    public static final String[] REQUIRED_PERMISSIONS = new String[]{
+            Manifest.permission.CAMERA,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+    };
+
+    private final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        // Check if permissions are granted.
+        if (!permissionsGranted()) {
+            Log.w(TAG, "Permissions not granted by user, starting PermissionsActivity...");
+            startPermissionsActivity();
+        } else {
+            Log.w(TAG, "Permissions granted by user, proceeding.");
+        }
+
         viewFinderModel = new ViewModelProvider(this).get(ViewFinderViewModel.class);
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.cameraContainer,
+                .replace(R.id.viewFinder,
                         new ViewFinderFragment())
                 .commit();
 
@@ -61,13 +73,6 @@ public class MainActivity extends AppCompatActivity {
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         viewFinderModel.initCameraProviderFuture(cameraProviderFuture);
 
-
-        // get camera perms
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
-        } else {
-            startCamera();
-        }
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -111,7 +116,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private boolean permissionsGranted() {
+        for (String permission : REQUIRED_PERMISSIONS) {
+            if (ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
 
+    private void startPermissionsActivity() {
+        Intent intent = new Intent(this, PermissionsActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
 }
 

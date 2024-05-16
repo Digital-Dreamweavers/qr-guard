@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.firebase.messaging)
     implementation(libs.play.services.location)
     implementation(libs.legacy.support.v4)
+    implementation(libs.activity)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
