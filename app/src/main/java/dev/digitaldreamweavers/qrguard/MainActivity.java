@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
 
     private PreviewView qrViewFinder;
+
     private ExecutorService executor;
     private ImageCapture imageCapture;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
@@ -47,15 +48,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        viewFinderModel = new ViewModelProvider(this).get(ViewFinderViewModel.class);
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.cameraContainer,
                         new ViewFinderFragment())
                 .commit();
 
-        viewFinderModel = new ViewModelProvider(this).get(ViewFinderViewModel.class);
+        // Initialise camera provider
+        Log.w(TAG, "Starting Camera...");
+        cameraProviderFuture = ProcessCameraProvider.getInstance(this);
+        viewFinderModel.initCameraProviderFuture(cameraProviderFuture);
 
-        // get camera perms, not proper implementation
+
+        // get camera perms
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
         } else {
@@ -78,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
                 //.requireLensFacing(CameraSelector.LENS_FACING_BACK)
                 .build();
 
+        qrViewFinder = findViewById(R.id.viewFinder);
+
+        Log.w(TAG, "Setting Surface Provider for camera...");
         preview.setSurfaceProvider(qrViewFinder.getSurfaceProvider());
 
         Camera camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview);
@@ -85,35 +95,20 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void startCamera() {
-        cameraProviderFuture = ProcessCameraProvider.getInstance(this);
 
-        // Bind camera to listener.
-        cameraProviderFuture.addListener(() -> {
-            try {
-                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-                bindPreview(cameraProvider);
-            } catch (ExecutionException | InterruptedException e) {
-                Log.w(TAG, "Could not add Camera Listener: ", e);
+        viewFinderModel.getCameraProviderFuture().observe(this, cameraProviderFuture -> {
+            if (cameraProviderFuture != null) {
+                try {
+                    ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+                    bindPreview(cameraProvider);
+                } catch (ExecutionException | InterruptedException e) {
+                    Log.w(TAG, "Could not add Camera Listener: ", e);
+                }
+            } else {
+                Log.w(TAG, "Camera Provider Future is null");
             }
-            }, ContextCompat.getMainExecutor(this));
+        });
 
-        cameraProviderFuture = ProcessCameraProvider.getInstance(this);
-
-        // Bind camera to listener.
-        cameraProviderFuture.addListener(() -> {
-            try {
-                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-                bindPreview(cameraProvider);
-            } catch (ExecutionException | InterruptedException e) {
-                Log.w(TAG, "Could not add Camera Listener: ", e);
-            }
-        }, ContextCompat.getMainExecutor(this));
-
-        // Create a Toast object
-        Toast toast = Toast.makeText(this, "Camera starts here.", Toast.LENGTH_SHORT);
-
-        // Show the Toast
-        toast.show();
     }
 
 
