@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         viewFinderModel.initCameraProviderFuture(cameraProviderFuture);
 
+        startCamera();
+
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
