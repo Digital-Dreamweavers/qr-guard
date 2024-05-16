@@ -27,6 +27,9 @@ import dev.digitaldreamweavers.qrguard.ui.ViewFinderFragment;
 import dev.digitaldreamweavers.qrguard.ui.ViewFinderViewModel;
 import dev.digitaldreamweavers.qrguard.ui.login.LoginActivity;
 
+import androidx.fragment.app.FragmentTransaction;
+import dev.digitaldreamweavers.qrguard.ui.BottomNavigationFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
@@ -61,6 +64,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         viewFinderModel = new ViewModelProvider(this).get(ViewFinderViewModel.class);
+
+        // Add BottomNavigationFragment
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.bottom_navigation, new BottomNavigationFragment());
+        transaction.commit();
 
         getSupportFragmentManager()
                 .beginTransaction()

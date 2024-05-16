@@ -9,11 +9,9 @@
         android:id="@+id/navigation_camera"
         android:title="@string/btn_camera"/>
 
-
     <item
         android:id="@+id/navigation_profile"
         android:title="@string/btn_profile" />
 
 </menu>
-
 

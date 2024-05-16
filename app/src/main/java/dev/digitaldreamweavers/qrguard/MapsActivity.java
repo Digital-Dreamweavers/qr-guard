@@ -12,6 +12,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import dev.digitaldreamweavers.qrguard.databinding.ActivityMapsBinding;
+import dev.digitaldreamweavers.qrguard.ui.BottomNavigationFragment;
+import androidx.fragment.app.FragmentTransaction;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -21,6 +23,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Initialize and add BottomNavigationFragment
+        if (savedInstanceState == null) {
+            BottomNavigationFragment bottomNavigationFragment = new BottomNavigationFragment();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.bottom_navigation, bottomNavigationFragment);
+            transaction.commit();
+        }
 
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

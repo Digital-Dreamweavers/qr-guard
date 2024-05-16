@@ -1,10 +1,12 @@
 package dev.digitaldreamweavers.qrguard.ui.profile;
 
 import android.os.Bundle;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
+
+import dev.digitaldreamweavers.qrguard.ui.BottomNavigationFragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -15,20 +17,25 @@ import dev.digitaldreamweavers.qrguard.R;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private TextView textName;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        textName = findViewById(R.id.text_name);
+        // Initialize and add BottomNavigationFragment
+        if (savedInstanceState == null) {
+            BottomNavigationFragment bottomNavigationFragment = new BottomNavigationFragment();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.bottom_navigation, bottomNavigationFragment);
+            transaction.commit();
+        }
 
         // Fetch and display user's first and last name
         fetchAndDisplayUserName();
     }
 
     private void fetchAndDisplayUserName() {
+        // Fetch and display user's first and last name
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             for (UserInfo profile : user.getProviderData()) {
@@ -37,11 +44,12 @@ public class ProfileActivity extends AppCompatActivity {
                     // Cast the UserInfo object to GoogleSignInAccount
                     GoogleSignInAccount googleAccount = (GoogleSignInAccount) profile;
                     String fullName = googleAccount.getDisplayName();
-                    textName.setText(fullName);
+                    // Use fullName as needed
                     break;
                 }
             }
         }
     }
 }
+
 
