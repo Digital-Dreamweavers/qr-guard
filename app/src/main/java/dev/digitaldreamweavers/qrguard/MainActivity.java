@@ -17,6 +17,7 @@ import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.concurrent.ExecutionException;
@@ -29,6 +30,7 @@ import dev.digitaldreamweavers.qrguard.ui.login.LoginActivity;
 
 import androidx.fragment.app.FragmentTransaction;
 import dev.digitaldreamweavers.qrguard.ui.BottomNavigationFragment;
+import dev.digitaldreamweavers.qrguard.ui.profile.ProfileActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,6 +55,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.navigation_camera) {
+                // Start CameraActivity
+                startActivity(new Intent(MainActivity.this, MapsActivity.class));
+                finish(); // Optional: Finish current activity
+                return true;
+            } else if (id == R.id.navigation_profile) {
+                // Start ProfileActivity
+                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+                finish(); // Optional: Finish current activity
+                return true;
+            }
+            return false;
+        });
+
 
 
         // Check if permissions are granted.

@@ -14,6 +14,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import dev.digitaldreamweavers.qrguard.databinding.ActivityMapsBinding;
 import dev.digitaldreamweavers.qrguard.ui.BottomNavigationFragment;
 import androidx.fragment.app.FragmentTransaction;
+import dev.digitaldreamweavers.qrguard.ui.BottomNavigationViewModel;
+import dev.digitaldreamweavers.qrguard.ui.profile.ProfileActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import android.content.Intent;
+import android.view.View;
+
+
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -24,13 +31,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Initialize and add BottomNavigationFragment
-        if (savedInstanceState == null) {
-            BottomNavigationFragment bottomNavigationFragment = new BottomNavigationFragment();
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.bottom_navigation, bottomNavigationFragment);
-            transaction.commit();
-        }
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.navigation_camera) {
+                startActivity(new Intent(MapsActivity.this, MainActivity.class));
+                finish();
+                return true;
+            } else if (id == R.id.navigation_profile) {
+                startActivity(new Intent(MapsActivity.this, ProfileActivity.class));
+                finish();
+                return true;
+            }
+            return false;
+        });
+
 
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
