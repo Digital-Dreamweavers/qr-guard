@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,8 @@ public class BottomNavigationFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private BottomNavigationViewModel mViewModel;
+
+    private String TAG = "BottomNavigationFragment";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,9 +65,8 @@ public class BottomNavigationFragment extends Fragment {
         // Observe the login status
         mViewModel.getIsLoggedIn().observe(getViewLifecycleOwner(), isLoggedIn -> {
             if (isLoggedIn) {
-                // User is logged in, navigate to MainActivity
-                startActivity(new Intent(getActivity(), MainActivity.class));
-                getActivity().finish(); // Finish current activity to prevent user from going back to the login screen
+                // TODO: Get Profile picture
+                Log.i(TAG, "User is logged in.");
             } else {
                 // User is not logged in, navigate to LoginActivity
                 startActivity(new Intent(getActivity(), LoginActivity.class));
