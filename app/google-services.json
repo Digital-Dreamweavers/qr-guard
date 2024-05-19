@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "21551772525-cfjp3no73qdoaqkkqbvt0hehfo9upki7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.digitaldreamweavers.qrguard",
+            "certificate_hash": "705e0d4370400826daca97aabd0a82c8827b27b2"
+          }
+        },
+        {
           "client_id": "21551772525-9rug5mlm9jrrjjpu6630tvj0fjloa80r.apps.googleusercontent.com",
           "client_type": 3
         }
