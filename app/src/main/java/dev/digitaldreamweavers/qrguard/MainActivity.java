@@ -21,6 +21,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.mlkit.vision.barcode.BarcodeScanner;
 import com.google.mlkit.vision.barcode.BarcodeScanning;
@@ -51,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
     private ExecutorService executor = Executors.newSingleThreadExecutor();
     private ImageCapture imageCapture;
 
+    private ExtendedFloatingActionButton scanFAB;
+
+
     // Use provided MLKit BarcodeScanner
     private BarcodeScanner qrScanner;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
@@ -68,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        scanFAB = findViewById(R.id.scanButton);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
@@ -166,14 +172,17 @@ public class MainActivity extends AppCompatActivity {
                     .addOnSuccessListener(barcodes -> {
                         if (barcodes.isEmpty()) {
                             //Log.i(TAG, "No barcode detected.");
+                            updateFAB(0);
                         } else {
                             for (Barcode barcode : barcodes) {
 
                                 try {
                                     URL barcodeURL = new URL(barcode.getRawValue());
                                     Log.i(TAG, "Valid URL detected, now scanning: " + barcodeURL.toString());
+                                    updateFAB(2);
                                 } catch (Exception e) {
                                     Log.i(TAG, "Not a valid URL: " + barcode.getRawValue());
+                                    updateFAB(1);
                                 }
                             }
                         }
@@ -205,6 +214,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void updateFAB(int status) {
+        runOnUiThread(() -> {
+            switch (status) {
+                case 0: // Waiting
+                    Log.i(TAG, "WAITING");
+                    //scanFAB.setText(R.string.qr_status_waiting);
+                    break;
+                case 1: // Invalid
+                    Log.i(TAG, "INVALID");
+                    scanFAB.setText(R.string.qr_status_invalid);
+                    break;
+
+                case 2: // Ready
+                    Log.i(TAG, "READY");
+                    scanFAB.setText(R.string.qr_status_ready);
+                    break;
+            }
+        });
     }
 
     private boolean permissionsGranted() {

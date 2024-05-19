@@ -10,6 +10,11 @@ import com.google.common.util.concurrent.ListenableFuture;
 public class ViewFinderViewModel extends ViewModel {
     private final MutableLiveData<ListenableFuture<ProcessCameraProvider>> cameraProviderFuture = new MutableLiveData<>();
 
+    private final MutableLiveData<Integer> fabStatus = new MutableLiveData<>();
+
+    public final static int FAB_STATUS_WAITING = 0;
+
+
     public LiveData<ListenableFuture<ProcessCameraProvider>> getCameraProviderFuture() {
         return cameraProviderFuture;
     }
@@ -17,4 +22,5 @@ public class ViewFinderViewModel extends ViewModel {
     public void initCameraProviderFuture(ListenableFuture<ProcessCameraProvider> future) {
         cameraProviderFuture.setValue(future);
     }
+
 }

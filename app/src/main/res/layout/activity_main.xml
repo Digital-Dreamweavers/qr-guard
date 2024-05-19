@@ -5,7 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="?attr/actionBarSize">
+    android:paddingTop="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,15 +14,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
             <androidx.camera.view.PreviewView
                 android:id="@+id/viewFinder"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
-
+                android:layout_height="match_parent">
             </androidx.camera.view.PreviewView>
-
-
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/scanButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:clickable="false"
+                style="?attr/extendedFloatingActionButtonSurfaceStyle"
+                android:text="@string/qr_status_waiting"
+                android:contentDescription="@string/perform_a_scan_on_this_qr_code"
+                android:layout_marginBottom="16dp" />
+        </FrameLayout>
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
@@ -34,7 +46,9 @@
             app:labelVisibilityMode="labeled"
             app:menu="@menu/bottom_nav_menu"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" >
+
+        </com.google.android.material.bottomnavigation.BottomNavigationView>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
