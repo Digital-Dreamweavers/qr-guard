@@ -27,6 +27,7 @@ import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.common.InputImage;
 
+import java.net.URL;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -158,14 +159,23 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i(TAG, "Setting analyser...");
         imageAnalysis.setAnalyzer(executor, image -> {
-            Log.i(TAG, "Analysing...");
+            // Log.i(TAG, "Analysing...");
             InputImage inputImage = InputImage.fromMediaImage(Objects.requireNonNull(image.getImage()), image.getImageInfo().getRotationDegrees());
             // Use BarcodeScanner to scan the image
             qrScanner.process(inputImage)
                     .addOnSuccessListener(barcodes -> {
-                        Log.i(TAG, "Barcode found.");
-                        for (Barcode barcode : barcodes) {
-                            Log.i(TAG, "Barcode detected: " + barcode.getRawValue());
+                        if (barcodes.isEmpty()) {
+                            //Log.i(TAG, "No barcode detected.");
+                        } else {
+                            for (Barcode barcode : barcodes) {
+
+                                try {
+                                    URL barcodeURL = new URL(barcode.getRawValue());
+                                    Log.i(TAG, "Valid URL detected, now scanning: " + barcodeURL.toString());
+                                } catch (Exception e) {
+                                    Log.i(TAG, "Not a valid URL: " + barcode.getRawValue());
+                                }
+                            }
                         }
                     })
                     .addOnFailureListener(e -> {
@@ -173,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                     })
                     .addOnCompleteListener(result -> {
                         image.close();
-                        Log.i(TAG, "Image closed.");
+                        //Log.i(TAG, "Image closed.");
                     });
         });
 
@@ -206,7 +216,8 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void startReportActivity() {
+    // Starts ReportActivity to scan url.
+    private void startReportActivity(URL urlToScan) {
         // TODO: Start ReportActivity.
     }
 
