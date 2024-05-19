@@ -7,9 +7,12 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.OptIn;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
+import androidx.camera.core.ExperimentalGetImage;
+import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
@@ -19,9 +22,15 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.mlkit.vision.barcode.BarcodeScanner;
+import com.google.mlkit.vision.barcode.BarcodeScanning;
+import com.google.mlkit.vision.barcode.common.Barcode;
+import com.google.mlkit.vision.common.InputImage;
 
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import dev.digitaldreamweavers.qrguard.databinding.ActivityMainBinding;
 import dev.digitaldreamweavers.qrguard.ui.ViewFinderFragment;
@@ -38,8 +47,11 @@ public class MainActivity extends AppCompatActivity {
 
     private PreviewView qrViewFinder;
 
-    private ExecutorService executor;
+    private ExecutorService executor = Executors.newSingleThreadExecutor();
     private ImageCapture imageCapture;
+
+    // Use provided MLKit BarcodeScanner
+    private BarcodeScanner qrScanner;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private ViewFinderViewModel viewFinderModel;
 
@@ -101,6 +113,9 @@ public class MainActivity extends AppCompatActivity {
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         viewFinderModel.initCameraProviderFuture(cameraProviderFuture);
 
+        // Initialise Barcode Scanner
+        qrScanner = BarcodeScanning.getClient();
+
         startCamera();
 
 
@@ -125,9 +140,45 @@ public class MainActivity extends AppCompatActivity {
         Log.w(TAG, "Setting Surface Provider for camera...");
         preview.setSurfaceProvider(qrViewFinder.getSurfaceProvider());
 
-        Camera camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview);
+        ImageAnalysis imageAnalyser = buildBarcodeScanner();
+        Log.i(TAG, "Image Analyser attached.");
+
+
+        Camera camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalyser);
     }
 
+
+    // buildBarcodeScanner: Returns an image analyser to be bind to a camera.
+    @OptIn(markerClass = ExperimentalGetImage.class)
+    private ImageAnalysis buildBarcodeScanner() {
+        Log.i(TAG, "Building analyser...");
+        ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .build();
+
+        Log.i(TAG, "Setting analyser...");
+        imageAnalysis.setAnalyzer(executor, image -> {
+            Log.i(TAG, "Analysing...");
+            InputImage inputImage = InputImage.fromMediaImage(Objects.requireNonNull(image.getImage()), image.getImageInfo().getRotationDegrees());
+            // Use BarcodeScanner to scan the image
+            qrScanner.process(inputImage)
+                    .addOnSuccessListener(barcodes -> {
+                        Log.i(TAG, "Barcode found.");
+                        for (Barcode barcode : barcodes) {
+                            Log.i(TAG, "Barcode detected: " + barcode.getRawValue());
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.w(TAG, "Barcode scanning failed: ", e);
+                    })
+                    .addOnCompleteListener(result -> {
+                        image.close();
+                        Log.i(TAG, "Image closed.");
+                    });
+        });
+
+        return imageAnalysis;
+    }
 
     private void startCamera() {
 
@@ -155,11 +206,20 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    private void startReportActivity() {
+        // TODO: Start ReportActivity.
+    }
+
     private void startPermissionsActivity() {
         Intent intent = new Intent(this, PermissionsActivity.class);
         startActivity(intent);
         finish();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        executor.shutdown();
+    }
 }
 
