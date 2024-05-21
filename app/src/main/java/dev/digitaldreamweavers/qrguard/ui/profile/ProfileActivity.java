@@ -1,17 +1,9 @@
 package dev.digitaldreamweavers.qrguard.ui.profile;
 
-import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 
-import dev.digitaldreamweavers.qrguard.MainActivity;
-import dev.digitaldreamweavers.qrguard.MapsActivity;
-import dev.digitaldreamweavers.qrguard.ui.BottomNavigationFragment;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
@@ -26,23 +18,6 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        // Set up BottomNavigationView click listener
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-            if (id == R.id.navigation_camera) {
-                // Start CameraActivity
-                startActivity(new Intent(ProfileActivity.this, MainActivity.class));
-                finish(); // Optional: Finish current activity
-                return true;
-            } else if (id == R.id.navigation_map) {
-                // Start MapsActivity
-                startActivity(new Intent(ProfileActivity.this, MapsActivity.class));
-                finish(); // Optional: Finish current activity
-                return true;
-            }
-            return false;
-        });
 
         // Fetch and display user's first and last name
         fetchAndDisplayUserName();

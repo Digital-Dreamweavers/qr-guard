@@ -7,6 +7,15 @@ import androidx.lifecycle.ViewModel;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
+/*
+*
+*   ViewFinderViewModel.java
+*   The ViewFinderViewModel class provides mutable data for the camera provider and Barcode URl.
+*
+*   The ViewModel is observed by the FloatingScanButton to update the UI based on Barcode scanning status.
+*
+ */
+
 public class ViewFinderViewModel extends ViewModel {
     private final MutableLiveData<ListenableFuture<ProcessCameraProvider>> cameraProviderFuture = new MutableLiveData<>();
 

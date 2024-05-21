@@ -6,52 +6,36 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.OptIn;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.camera.core.Camera;
-import androidx.camera.core.CameraSelector;
-import androidx.camera.core.ExperimentalGetImage;
-import androidx.camera.core.ImageAnalysis;
-import androidx.camera.core.ImageCapture;
-import androidx.camera.core.Preview;
-import androidx.camera.lifecycle.ProcessCameraProvider;
-import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
-import androidx.lifecycle.ViewModelProvider;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.navigation.NavigationBarView;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.mlkit.vision.barcode.BarcodeScanner;
-import com.google.mlkit.vision.barcode.BarcodeScanning;
-import com.google.mlkit.vision.barcode.common.Barcode;
-import com.google.mlkit.vision.common.InputImage;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.net.URL;
-import java.util.Objects;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import dev.digitaldreamweavers.qrguard.databinding.ActivityMainBinding;
-import dev.digitaldreamweavers.qrguard.ui.camera.ViewFinderFragment;
-import dev.digitaldreamweavers.qrguard.ui.camera.ViewFinderViewModel;
-
-import androidx.fragment.app.FragmentTransaction;
 import dev.digitaldreamweavers.qrguard.ui.BottomNavigationFragment;
-import dev.digitaldreamweavers.qrguard.ui.profile.ProfileActivity;
+
+/*
+ *
+ *  MainActivity.java
+ *
+ *  The MainActivity along with the layout activity_main.xml is the entry point and base for
+ *  some of the main screens (Map, Camera and Profile).
+ *
+ *  In the context of entry point, it also checks for permissions then prepares the camera
+ *  while authenticating with Google Sign-In.
+ *
+ *  ATTENTION IF COMPILING FROM SOURCE!
+ *  When signing in with Google, you may get a DEVELOPER_ERROR 10 result in Logcat.
+ *  This is because Google Sign-in will NOT work without an authorised SHA-1 fingerprint in Firebase,
+ *  A signed APK file has been provided in the submission so that Google Sign-in can be used.
+ *
+ */
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
-
-    private ExtendedFloatingActionButton scanFAB;
-
-
-    private ViewFinderViewModel viewFinderModel;
 
     public static final String[] REQUIRED_PERMISSIONS = new String[]{
             Manifest.permission.CAMERA,
@@ -60,8 +44,6 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private final String TAG = "MainActivity";
-
-
 
 
     @Override
@@ -88,28 +70,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void updateFAB(int status) {
-        runOnUiThread(() -> {
-            switch (status) {
-                case 0: // Waiting
-                    Log.i(TAG, "WAITING");
-                    //scanFAB.setText(R.string.qr_status_waiting);
-                    break;
-                case 1: // Invalid
-                    Log.i(TAG, "INVALID");
-                    scanFAB.setText(R.string.qr_status_invalid);
-                    break;
 
-                case 2: // Ready
-                    Log.i(TAG, "READY");
-                    scanFAB.setText(R.string.qr_status_ready);
-                    break;
-            }
-        });
-    }
-
-
-        private boolean permissionsGranted() {
+    private boolean permissionsGranted() {
         for (String permission : REQUIRED_PERMISSIONS) {
             if (ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
                 return false;

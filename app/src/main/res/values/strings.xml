@@ -12,7 +12,7 @@
     <string name="image_shield">shield_image</string>
     <string name="image_alert">alert_image</string>
     <string name="image_comment">comment_image</string>
-    <string name="default_web_client_id">YOUR_DEFAULT_WEB_CLIENT_ID</string>
+    <string name="default_web_client_id">21551772525-9rug5mlm9jrrjjpu6630tvj0fjloa80r.apps.googleusercontent.com</string>
     <string name="profile_activity_title">Profile</string>
     <string name="profile">Profile</string>
     <string name="first_name">First</string>
@@ -47,5 +47,11 @@
         QR Guard has noticed that one or more of these permissions were not granted. Tap the button below to grant them.
     </string>
     <string name="permissionsActivity_grant_button">Grant Permissions</string>
+    
+    <!-- Floating Scan Button Strings -->
+    <string name="qr_status_waiting">Point your camera at a QR Code…</string>
+    <string name="qr_status_invalid">This QR Code isn\'t a URL. Try another…</string>
+    <string name="qr_status_ready">URL found. Tap to scan!</string>
+    <string name="perform_a_scan_on_this_qr_code">Perform a scan on this QR Code</string>
 
 </resources>

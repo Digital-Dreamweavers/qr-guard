@@ -36,6 +36,16 @@ import java.util.concurrent.Executors;
 
 import dev.digitaldreamweavers.qrguard.R;
 
+/*
+*
+*   ViewFinderFragment.java
+*   The ViewFinderFragment class is responsible for handling the camera preview and barcode scanning.
+*   It uses the Google's MLKit BarcodeScanner to scan the image and detect barcodes.
+*
+*   This fragment is tied in with the FloatingScanButton to help guide the user.
+*
+*/
+
 public class ViewFinderFragment extends Fragment {
 
     private ViewFinderViewModel mViewModel;
