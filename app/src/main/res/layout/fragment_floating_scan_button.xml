@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.camera.FloatingScanButton">
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/scanButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:clickable="false"
+        style="?attr/extendedFloatingActionButtonSurfaceStyle"
+        android:text="@string/qr_status_waiting"
+        android:contentDescription="@string/perform_a_scan_on_this_qr_code"
+        android:layout_marginBottom="16dp" />
+
+</FrameLayout>

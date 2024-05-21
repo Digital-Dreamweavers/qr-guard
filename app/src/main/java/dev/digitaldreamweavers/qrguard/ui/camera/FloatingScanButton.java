@@ -1,4 +1,4 @@
-package dev.digitaldreamweavers.qrguard.ui;
+package dev.digitaldreamweavers.qrguard.ui.camera;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -14,24 +14,24 @@ import android.view.ViewGroup;
 
 import dev.digitaldreamweavers.qrguard.R;
 
-public class ViewFinderFragment extends Fragment {
+public class FloatingScanButton extends Fragment {
 
-    private ViewFinderViewModel mViewModel;
+    private FloatingScanButtonViewModel mViewModel;
 
-    public static ViewFinderFragment newInstance() {
-        return new ViewFinderFragment();
+    public static FloatingScanButton newInstance() {
+        return new FloatingScanButton();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_view_finder, container, false);
+        return inflater.inflate(R.layout.fragment_floating_scan_button, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(ViewFinderViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(FloatingScanButtonViewModel.class);
         // TODO: Use the ViewModel
     }
 

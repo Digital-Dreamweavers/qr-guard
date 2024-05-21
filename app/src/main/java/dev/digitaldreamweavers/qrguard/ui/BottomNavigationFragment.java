@@ -13,12 +13,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import dev.digitaldreamweavers.qrguard.MainActivity;
 import dev.digitaldreamweavers.qrguard.MapsActivity;
 import dev.digitaldreamweavers.qrguard.R;
+import dev.digitaldreamweavers.qrguard.ui.camera.ViewFinderFragment;
 import dev.digitaldreamweavers.qrguard.ui.login.LoginActivity;
 import dev.digitaldreamweavers.qrguard.ui.profile.ProfileActivity;
 
@@ -29,11 +31,39 @@ public class BottomNavigationFragment extends Fragment {
 
     private String TAG = "BottomNavigationFragment";
 
+    // Bind fragments to navigation bar.
+    private final NavigationBarView.OnItemSelectedListener onItemSelected = item -> {
+        int id = item.getItemId();
+        Fragment fragment = null;
+
+        if (id == R.id.navigation_camera) {
+            fragment = new ViewFinderFragment();
+            // TODO: Camera
+        } else if (id == R.id.navigation_profile) {
+            // TODO: Profile
+        } else if (id == R.id.navigation_map) {
+            // TODO: Map
+        }
+
+        // Replace the current fragment with the selected fragment.
+        if (fragment != null) {
+            requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, fragment).commit();
+        }
+        return true;
+    };
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
         mViewModel = new ViewModelProvider(this).get(BottomNavigationViewModel.class);
+
+        // Bind the BottomNavigationView to the listener.
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(onItemSelected);
+
+        // Let's start with the camera fragment.
+        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new ViewFinderFragment()).commit();
     }
 
     @Override
@@ -41,26 +71,6 @@ public class BottomNavigationFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_bottom_navigation, container, false);
 
-        // Set up BottomNavigationView
-        BottomNavigationView bottomNavigationView = view.findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-                if (id == R.id.navigation_map) {
-                    navigateToMapActivity();
-                    return true;
-                } else if (id == R.id.navigation_camera) {
-                    navigateToCameraActivity();
-                    return true;
-                } else if (id == R.id.navigation_profile) {
-                    navigateToProfileActivity();
-                    return true;
-                }
-                return false;
-            }
-
-        });
 
         // Observe the login status
         mViewModel.getIsLoggedIn().observe(getViewLifecycleOwner(), isLoggedIn -> {

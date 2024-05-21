@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.mlkit.vision.barcode.BarcodeScanner;
 import com.google.mlkit.vision.barcode.BarcodeScanning;
@@ -35,9 +36,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import dev.digitaldreamweavers.qrguard.databinding.ActivityMainBinding;
-import dev.digitaldreamweavers.qrguard.ui.ViewFinderFragment;
-import dev.digitaldreamweavers.qrguard.ui.ViewFinderViewModel;
-import dev.digitaldreamweavers.qrguard.ui.login.LoginActivity;
+import dev.digitaldreamweavers.qrguard.ui.camera.ViewFinderFragment;
+import dev.digitaldreamweavers.qrguard.ui.camera.ViewFinderViewModel;
 
 import androidx.fragment.app.FragmentTransaction;
 import dev.digitaldreamweavers.qrguard.ui.BottomNavigationFragment;
@@ -47,16 +47,10 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
-    private PreviewView qrViewFinder;
-
-    private ExecutorService executor = Executors.newSingleThreadExecutor();
-    private ImageCapture imageCapture;
 
     private ExtendedFloatingActionButton scanFAB;
 
 
-    // Use provided MLKit BarcodeScanner
-    private BarcodeScanner qrScanner;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private ViewFinderViewModel viewFinderModel;
 
@@ -68,31 +62,13 @@ public class MainActivity extends AppCompatActivity {
 
     private final String TAG = "MainActivity";
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        scanFAB = findViewById(R.id.scanButton);
-
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-            if (id == R.id.navigation_camera) {
-                // Start CameraActivity
-                startActivity(new Intent(MainActivity.this, MapsActivity.class));
-                finish(); // Optional: Finish current activity
-                return true;
-            } else if (id == R.id.navigation_profile) {
-                // Start ProfileActivity
-                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
-                finish(); // Optional: Finish current activity
-                return true;
-            }
-            return false;
-        });
-
-
 
         // Check if permissions are granted.
         if (!permissionsGranted()) {
@@ -102,12 +78,17 @@ public class MainActivity extends AppCompatActivity {
             Log.w(TAG, "Permissions granted by user, proceeding.");
         }
 
-        viewFinderModel = new ViewModelProvider(this).get(ViewFinderViewModel.class);
-
         // Add BottomNavigationFragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.bottom_navigation, new BottomNavigationFragment());
         transaction.commit();
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new ViewFinderFragment()).commit();
+
+
+
+
+
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -131,91 +112,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    void bindPreview(@NonNull ProcessCameraProvider cameraProvider) {
-        cameraProvider.unbindAll();
-
-        Preview preview = new Preview.Builder()
-                .build();
-
-
-        CameraSelector cameraSelector = new CameraSelector.Builder()
-                //.requireLensFacing(CameraSelector.LENS_FACING_BACK)
-                .build();
-
-        qrViewFinder = findViewById(R.id.viewFinder);
-
-        Log.w(TAG, "Setting Surface Provider for camera...");
-        preview.setSurfaceProvider(qrViewFinder.getSurfaceProvider());
-
-        ImageAnalysis imageAnalyser = buildBarcodeScanner();
-        Log.i(TAG, "Image Analyser attached.");
-
-
-        Camera camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalyser);
-    }
-
-
-    // buildBarcodeScanner: Returns an image analyser to be bind to a camera.
-    @OptIn(markerClass = ExperimentalGetImage.class)
-    private ImageAnalysis buildBarcodeScanner() {
-        Log.i(TAG, "Building analyser...");
-        ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
-                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                .build();
-
-        Log.i(TAG, "Setting analyser...");
-        imageAnalysis.setAnalyzer(executor, image -> {
-            // Log.i(TAG, "Analysing...");
-            InputImage inputImage = InputImage.fromMediaImage(Objects.requireNonNull(image.getImage()), image.getImageInfo().getRotationDegrees());
-            // Use BarcodeScanner to scan the image
-            qrScanner.process(inputImage)
-                    .addOnSuccessListener(barcodes -> {
-                        if (barcodes.isEmpty()) {
-                            //Log.i(TAG, "No barcode detected.");
-                            updateFAB(0);
-                        } else {
-                            for (Barcode barcode : barcodes) {
-
-                                try {
-                                    URL barcodeURL = new URL(barcode.getRawValue());
-                                    Log.i(TAG, "Valid URL detected, now scanning: " + barcodeURL.toString());
-                                    updateFAB(2);
-                                } catch (Exception e) {
-                                    Log.i(TAG, "Not a valid URL: " + barcode.getRawValue());
-                                    updateFAB(1);
-                                }
-                            }
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.w(TAG, "Barcode scanning failed: ", e);
-                    })
-                    .addOnCompleteListener(result -> {
-                        image.close();
-                        //Log.i(TAG, "Image closed.");
-                    });
-        });
-
-        return imageAnalysis;
-    }
-
-    private void startCamera() {
-
-        viewFinderModel.getCameraProviderFuture().observe(this, cameraProviderFuture -> {
-            if (cameraProviderFuture != null) {
-                try {
-                    ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-                    bindPreview(cameraProvider);
-                } catch (ExecutionException | InterruptedException e) {
-                    Log.w(TAG, "Could not add Camera Listener: ", e);
-                }
-            } else {
-                Log.w(TAG, "Camera Provider Future is null");
-            }
-        });
-
-    }
-
     private void updateFAB(int status) {
         runOnUiThread(() -> {
             switch (status) {
@@ -236,7 +132,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private boolean permissionsGranted() {
+
+        private boolean permissionsGranted() {
         for (String permission : REQUIRED_PERMISSIONS) {
             if (ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
                 return false;
@@ -259,7 +156,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        executor.shutdown();
     }
 }
 
