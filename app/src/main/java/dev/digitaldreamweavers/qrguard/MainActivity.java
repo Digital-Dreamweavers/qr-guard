@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
     private ExtendedFloatingActionButton scanFAB;
 
 
-    private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private ViewFinderViewModel viewFinderModel;
 
     public static final String[] REQUIRED_PERMISSIONS = new String[]{
@@ -79,33 +78,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Add BottomNavigationFragment
+        // The BNF will activate the viewfinder.
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.bottom_navigation, new BottomNavigationFragment());
         transaction.commit();
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new ViewFinderFragment()).commit();
-
-
-
-
-
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.viewFinder,
-                        new ViewFinderFragment())
-                .commit();
-
-        // Initialise camera provider
-        Log.w(TAG, "Starting Camera...");
-        cameraProviderFuture = ProcessCameraProvider.getInstance(this);
-        viewFinderModel.initCameraProviderFuture(cameraProviderFuture);
-
-        // Initialise Barcode Scanner
-        qrScanner = BarcodeScanning.getClient();
-
-        startCamera();
-
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
