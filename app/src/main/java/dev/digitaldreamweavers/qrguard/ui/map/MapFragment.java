@@ -19,6 +19,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Objects;
+
 import dev.digitaldreamweavers.qrguard.R;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
@@ -35,11 +37,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
+        View view = inflater.inflate(R.layout.fragment_map, container, false);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-        return inflater.inflate(R.layout.fragment_map, container, false);
+
+        Objects.requireNonNull(mapFragment).getMapAsync(this);
+        return view;
     }
 
     @Override

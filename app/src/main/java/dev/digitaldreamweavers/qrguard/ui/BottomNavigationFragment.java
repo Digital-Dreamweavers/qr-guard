@@ -47,12 +47,14 @@ public class BottomNavigationFragment extends Fragment {
             // TODO: Map
         }
 
-        Log.w(TAG, id + " does not fit into following IDs: " + R.id.navigation_camera + ", " + R.id.navigation_profile + ", " + R.id.navigation_map);
-
         // Replace the current fragment with the selected fragment.
         if (fragment != null) {
             requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, fragment).commit();
+            return true;
         }
+
+        Log.w(TAG, id + " does not fit into following IDs: " + R.id.navigation_camera + ", " + R.id.navigation_profile + ", " + R.id.navigation_map);
+
         return false;
     };
 
@@ -61,12 +63,6 @@ public class BottomNavigationFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
         mViewModel = new ViewModelProvider(this).get(BottomNavigationViewModel.class);
-
-        // Bind the BottomNavigationView to the listener.
-        Log.i(TAG, "Binding BottomNavigationView to listener.");
-        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnItemSelectedListener(onItemSelected);
-        bottomNavigationView.setSelectedItemId(R.id.navigation_camera);
 
 
         // Let's start with the camera fragment.
@@ -90,6 +86,11 @@ public class BottomNavigationFragment extends Fragment {
                 getActivity().finish(); // Finish current activity to prevent user from going back to the main screen if they press back
             }
         });
+
+        // Bind the BottomNavigationView to the listener.
+        Log.i(TAG, "Binding BottomNavigationView to listener.");
+        BottomNavigationView bottomNavigationView = view.findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(onItemSelected);
 
         return view;
     }

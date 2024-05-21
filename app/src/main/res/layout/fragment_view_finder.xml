@@ -13,8 +13,7 @@
     </androidx.camera.view.PreviewView>
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainerView"
-        android:name="dev.digitaldreamweavers.qrguard.ui.camera.FloatingScanButton"
+        android:id="@+id/scanButtonContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
