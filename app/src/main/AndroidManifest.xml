@@ -54,9 +54,6 @@
             android:name=".ui.login.LoginActivity"
             android:exported="false"
             android:label="Login"></activity>
-        <activity
-            android:name=".ui.profile.ProfileActivity"
-            android:label="@string/profile_activity_title"></activity>
 
         <service
             android:name=".MyFirebaseMessagingService"

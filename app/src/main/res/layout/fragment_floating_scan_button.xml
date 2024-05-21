@@ -11,9 +11,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:clickable="false"
-        style="?attr/extendedFloatingActionButtonSurfaceStyle"
+        style="?attr/extendedFloatingActionButtonStyle"
         android:text="@string/qr_status_waiting"
         android:contentDescription="@string/perform_a_scan_on_this_qr_code"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"
+        android:visibility="invisible"/>
 
 </FrameLayout>

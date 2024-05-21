@@ -20,6 +20,7 @@ import dev.digitaldreamweavers.qrguard.R;
 import dev.digitaldreamweavers.qrguard.ui.camera.ViewFinderFragment;
 import dev.digitaldreamweavers.qrguard.ui.login.LoginActivity;
 import dev.digitaldreamweavers.qrguard.ui.map.MapFragment;
+import dev.digitaldreamweavers.qrguard.ui.profile.ProfileFragment;
 
 public class BottomNavigationFragment extends Fragment {
 
@@ -40,6 +41,7 @@ public class BottomNavigationFragment extends Fragment {
             // TODO: Camera
         } else if (id == R.id.navigation_profile) {
             Log.i(TAG, "Profile selected.");
+            fragment = new ProfileFragment();
             // TODO: Profile
         } else if (id == R.id.navigation_map) {
             Log.i(TAG, "Map selected.");

@@ -1,5 +1,6 @@
 package dev.digitaldreamweavers.qrguard.ui.camera;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -14,9 +15,13 @@ public class FloatingScanButtonViewModel extends ViewModel {
         return fabStatus;
     }
 
-    public void setFabStatus(int status, URL url) {
+    public void setFabStatus(int status, @Nullable URL url) {
         Integer statusInteger = status;
-        barcodeUrl.setValue(url);
+
+        if (url != null) {
+            barcodeUrl.setValue(url);
+        }
+
         if (!statusInteger.equals(fabStatus.getValue())) {
             fabStatus.setValue(status);
         }

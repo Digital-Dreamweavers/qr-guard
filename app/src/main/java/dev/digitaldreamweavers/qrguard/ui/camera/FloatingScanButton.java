@@ -3,6 +3,7 @@ package dev.digitaldreamweavers.qrguard.ui.camera;
 import androidx.annotation.UiThread;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+
+import java.net.URL;
 
 import dev.digitaldreamweavers.qrguard.R;
 
@@ -55,26 +58,44 @@ public class FloatingScanButton extends Fragment {
         mViewModel = new ViewModelProvider(this).get(FloatingScanButtonViewModel.class);
 
         // Observe changes.
-        mViewModel.getFabStatus().observe(getViewLifecycleOwner(), this::updateFabStatus);
-
+        mViewModel.getFabStatus().observe(getViewLifecycleOwner(), this::updateFabText);
 
         // TODO: Use the ViewModel
     }
 
+    public void setFabStatus(int status, @Nullable URL url) {
+        mViewModel.setFabStatus(status, url);
+    }
+
+    public void setFabStatus(int status) {
+        mViewModel.setFabStatus(status, null);
+    }
+
     @UiThread
-    void updateFabStatus(int status) {
+    void updateFabText(int status) {
         switch (status) {
             case FAB_STATUS_WAITING:
-                //fab.setIconResource(R.drawable.ic_baseline_qr_code_scanner_24);
+                fab.setIconResource(R.drawable.mystery_48dp);
                 fab.setText(R.string.qr_status_waiting);
+
+                fab.show();
+                fab.extend();
+
+                fab.setClickable(false);
                 break;
+
             case FAB_STATUS_INVALID:
-                //fab.setIconResource(R.drawable.ic_baseline_qr_code_scanner_24);
+                fab.setIconResource(R.drawable.unknown_48dp);
                 fab.setText(R.string.qr_status_invalid);
+
+                fab.setClickable(false);
                 break;
+
             case FAB_STATUS_VALID:
-                //fab.setIconResource(R.drawable.ic_baseline_qr_code_scanner_24);
+                fab.setIconResource(R.drawable.baseline_qr_code_scanner_64);
                 fab.setText(R.string.qr_status_ready);
+
+                fab.setClickable(true);
                 break;
         }
     }

@@ -13,7 +13,7 @@
     <string name="image_alert">alert_image</string>
     <string name="image_comment">comment_image</string>
     <string name="default_web_client_id">21551772525-9rug5mlm9jrrjjpu6630tvj0fjloa80r.apps.googleusercontent.com</string>
-    <string name="profile_activity_title">Profile</string>
+    <string name="profile_activity_title">Your Profile</string>
     <string name="profile">Profile</string>
     <string name="first_name">First</string>
     <string name="scans">Scans: %d</string>
