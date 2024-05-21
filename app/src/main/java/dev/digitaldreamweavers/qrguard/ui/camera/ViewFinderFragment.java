@@ -59,12 +59,12 @@ public class ViewFinderFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        qrViewFinder = new PreviewView(getContext());
+        qrViewFinder = new PreviewView(requireContext());
         cameraProviderFuture = ProcessCameraProvider.getInstance(requireActivity());
 
         // Initialise Barcode Scanner
         qrScanner = BarcodeScanning.getClient();
-        startCamera();
+
 
         return inflater.inflate(R.layout.fragment_view_finder, container, false);
     }
@@ -76,6 +76,7 @@ public class ViewFinderFragment extends Fragment {
         // Initialise camera provider
         Log.w(TAG, "Starting Camera...");
         mViewModel.initCameraProviderFuture(cameraProviderFuture);
+        startCamera();
         // TODO: Use the ViewModel
     }
 
