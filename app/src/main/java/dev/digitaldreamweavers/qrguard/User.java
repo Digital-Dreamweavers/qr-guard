@@ -5,72 +5,58 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.net.URI;
+
 public class User {
+    private String Uid;
 
-    private static final String TAG = "User";
-
-    private String uid;
     private String email;
     private String displayName;
     private Uri photoUrl;
+
     private int scans;
 
     public User(FirebaseUser user) {
-        this.uid = user.getUid();
+        this.Uid = user.getUid();
         this.email = user.getEmail();
         this.displayName = user.getDisplayName();
         this.photoUrl = user.getPhotoUrl();
-        this.scans = 0; // Initialize scans to 0 or any default value
     }
 
     public String getUid() {
-        return uid;
+        return this.Uid;
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public String getDisplayName() {
-        return displayName;
+        return this.displayName;
     }
 
     public Uri getPhotoUrl() {
-        return photoUrl;
+        return this.photoUrl;
     }
 
     public int getScans() {
-        return scans;
-    }
-
-    public void setScans(int scans) {
-        this.scans = scans;
-    }
-
-    public void incrementScans() {
-        this.scans++;
+        return this.scans;
     }
 
     @NonNull
     @Override
     public String toString() {
-        String photoUrlString = (photoUrl != null) ? photoUrl.toString() : "No photo URL";
-        Log.i("User", photoUrlString);
+        Log.i("User" , this.photoUrl.toString());
         return "User: " +
-                email +
+                this.email +
                 " (" +
-                uid +
+                this.Uid +
                 ")" +
                 "\n" +
                 "Display: " +
-                displayName + "\n" +
-                "Photo URL: " +
-                photoUrlString + "\n" +
-                "Scans: " +
-                scans;
+                this.displayName + "\n";
     }
 }
 
