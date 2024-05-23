@@ -7,8 +7,6 @@ import androidx.annotation.NonNull;
 
 import com.google.firebase.auth.FirebaseUser;
 
-import java.net.URI;
-
 public class User {
     private String Uid;
 
