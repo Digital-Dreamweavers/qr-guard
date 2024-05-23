@@ -29,6 +29,7 @@ import java.util.Map;
 
 import dev.digitaldreamweavers.qrguard.MainActivity;
 import dev.digitaldreamweavers.qrguard.R;
+import dev.digitaldreamweavers.qrguard.User;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -38,6 +39,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseFirestore db;
+
+    private User localUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,8 +139,9 @@ public class LoginActivity extends AppCompatActivity {
 
     // Add user data to Firestore
     private void createUserInFirestore(FirebaseUser user) {
-        String uid = user.getUid();
-        String email = user.getEmail();
+        localUser = new User(user);
+        String uid = localUser.getUid();
+        String email = localUser.getEmail();
 
         // Log the UID and email address received
         Log.d(TAG, "UID received: " + uid);

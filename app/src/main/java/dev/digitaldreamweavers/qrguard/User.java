@@ -5,11 +5,15 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.net.URI;
 
 public class User {
+
+    private static final String TAG = "User";
+
     private String Uid;
 
     private String email;
