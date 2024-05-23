@@ -91,7 +91,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // Authenticate with Firebase using the Google token
-    // Authenticate with Firebase using the Google token
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
@@ -103,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                         updateUI(user);
                         if (user != null) {
                             // Add user data to Firestore
-                            createUserInFirestore(user.getEmail());
+                            createUserInFirestore(user);
 
                             // Start MainActivity
                             startMainActivity();
@@ -124,7 +123,6 @@ public class LoginActivity extends AppCompatActivity {
         finish(); // Finish LoginActivity to prevent the user from going back to it after logging in
     }
 
-
     // Update UI based on FirebaseUser
     private void updateUI(FirebaseUser user) {
         if (user != null) {
@@ -137,19 +135,23 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // Add user data to Firestore
-    private void createUserInFirestore(String emailAddress) {
-        // Log the email address received
-        Log.d(TAG, "Email address received: " + emailAddress);
+    private void createUserInFirestore(FirebaseUser user) {
+        String uid = user.getUid();
+        String email = user.getEmail();
+
+        // Log the UID and email address received
+        Log.d(TAG, "UID received: " + uid);
+        Log.d(TAG, "Email address received: " + email);
 
         // Create a new user with email address
-        Map<String, Object> user = new HashMap<>();
-        user.put("email", emailAddress);
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("email", email);
 
-        // Add a new document with a generated ID
-        db.collection("users")
-                .add(user)
-                .addOnSuccessListener(documentReference -> Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId()))
-                .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
+        // Use the UID as the document ID
+        db.collection("users").document(uid)
+                .set(userData)
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully written with UID: " + uid))
+                .addOnFailureListener(e -> Log.w(TAG, "Error writing document", e));
     }
 
     // Fetch entire collection from Firestore (for testing)
@@ -171,6 +173,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 }
+
 
 
 
