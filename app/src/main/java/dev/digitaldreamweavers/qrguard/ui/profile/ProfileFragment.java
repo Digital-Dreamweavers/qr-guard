@@ -1,29 +1,27 @@
 package dev.digitaldreamweavers.qrguard.ui.profile;
 
 import androidx.lifecycle.ViewModelProvider;
-
+import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.Button;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
-
 import dev.digitaldreamweavers.qrguard.R;
+import dev.digitaldreamweavers.qrguard.ui.setting.SettingActivity;
+
 
 public class ProfileFragment extends Fragment {
 
     private String TAG = "ProfileFragment";
-
     private ProfileViewModel mViewModel;
 
     public static ProfileFragment newInstance() {
@@ -33,7 +31,20 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        // Find the settings button and set an OnClickListener
+        Button btnSettings = view.findViewById(R.id.btn_settings);
+        btnSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start the SettingsActivity
+                Intent intent = new Intent(getActivity(), SettingActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        return view;
     }
 
     @Override
@@ -61,5 +72,5 @@ public class ProfileFragment extends Fragment {
             }
         }
     }
-
 }
+

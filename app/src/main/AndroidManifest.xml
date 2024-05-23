@@ -17,10 +17,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.QRGuard"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        tools:replace="android:allowBackup,android:dataExtractionRules,android:fullBackupContent,android:icon,android:label,android:roundIcon,android:supportsRtl,android:theme">
+
         <activity
             android:name=".PermissionsActivity"
-            android:exported="false" />
+            android:exported="false"
+            tools:node="replace" />
+
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -34,30 +38,41 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${MAPS_API_KEY}" />
+            android:value="${MAPS_API_KEY}"
+            tools:replace="android:value" />
 
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            tools:node="replace">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ReportActivity"
             android:exported="false"
             android:label="@string/title_activity_report"
-            android:theme="@style/Theme.QRGuard.NoActionBar" />
+            android:theme="@style/Theme.QRGuard.NoActionBar"
+            tools:node="replace" />
+
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="false"
-            android:label="Login"></activity>
+            android:label="Login"
+            tools:node="replace" />
+
+        <activity
+            android:name=".ui.setting.SettingActivity"
+            />
+
 
         <service
             android:name=".MyFirebaseMessagingService"
-            android:exported="false">
+            android:exported="false"
+            tools:node="replace">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

@@ -8,58 +8,69 @@ import androidx.annotation.NonNull;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.net.URI;
-
 public class User {
 
     private static final String TAG = "User";
 
-    private String Uid;
-
+    private String uid;
     private String email;
     private String displayName;
     private Uri photoUrl;
-
     private int scans;
 
     public User(FirebaseUser user) {
-        this.Uid = user.getUid();
+        this.uid = user.getUid();
         this.email = user.getEmail();
         this.displayName = user.getDisplayName();
         this.photoUrl = user.getPhotoUrl();
+        this.scans = 0; // Initialize scans to 0 or any default value
     }
 
     public String getUid() {
-        return this.Uid;
+        return uid;
     }
 
     public String getEmail() {
-        return this.email;
+        return email;
     }
 
     public String getDisplayName() {
-        return this.displayName;
+        return displayName;
     }
 
     public Uri getPhotoUrl() {
-        return this.photoUrl;
+        return photoUrl;
     }
 
     public int getScans() {
-        return this.scans;
+        return scans;
+    }
+
+    public void setScans(int scans) {
+        this.scans = scans;
+    }
+
+    public void incrementScans() {
+        this.scans++;
     }
 
     @NonNull
     @Override
     public String toString() {
-        Log.i("User" , this.photoUrl.toString());
+        String photoUrlString = (photoUrl != null) ? photoUrl.toString() : "No photo URL";
+        Log.i("User", photoUrlString);
         return "User: " +
-                this.email +
+                email +
                 " (" +
-                this.Uid +
+                uid +
                 ")" +
                 "\n" +
                 "Display: " +
-                this.displayName + "\n";
+                displayName + "\n" +
+                "Photo URL: " +
+                photoUrlString + "\n" +
+                "Scans: " +
+                scans;
     }
 }
+

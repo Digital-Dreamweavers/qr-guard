@@ -78,8 +78,20 @@
             android:textSize="18sp"
             app:drawableTint="?attr/colorPrimary" />
 
+        <Button
+            android:id="@+id/btn_sign_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:padding="16dp"
+            android:text="@string/sign_out"
+            android:textSize="18sp"
+            android:background="?attr/colorPrimary"
+            android:textColor="?attr/colorOnPrimary"
+            />
 
     </LinearLayout>
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+
