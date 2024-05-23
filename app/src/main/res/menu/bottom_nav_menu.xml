@@ -3,15 +3,18 @@
 
     <item
         android:id="@+id/navigation_map"
-        android:title="@string/btn_map" />
+        android:title="@string/btn_map"
+        android:icon="@drawable/nav_map"/>
 
     <item
         android:id="@+id/navigation_camera"
-        android:title="@string/btn_camera"/>
+        android:title="@string/btn_camera"
+        android:icon="@drawable/nav_camera"/>
 
     <item
         android:id="@+id/navigation_profile"
-        android:title="@string/btn_profile" />
+        android:title="@string/btn_profile"
+        android:icon="@drawable/nav_profile"/>
 
 </menu>
 
