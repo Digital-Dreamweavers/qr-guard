@@ -47,7 +47,7 @@
         QR Guard has noticed that one or more of these permissions were not granted. Tap the button below to grant them.
     </string>
     <string name="permissionsActivity_grant_button">Grant Permissions</string>
-    
+
     <!-- Floating Scan Button Strings -->
     <string name="qr_status_waiting">Point your camera at a QR Code…</string>
     <string name="qr_status_invalid">This QR Code isn\'t a URL. Try another…</string>

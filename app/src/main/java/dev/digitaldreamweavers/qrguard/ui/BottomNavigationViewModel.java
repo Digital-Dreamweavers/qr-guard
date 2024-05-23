@@ -3,17 +3,20 @@ package dev.digitaldreamweavers.qrguard.ui;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class BottomNavigationViewModel extends ViewModel {
 
-    private FirebaseAuth mAuth;
-    private MutableLiveData<Boolean> isLoggedIn = new MutableLiveData<>();
+    private final MutableLiveData<Integer> selectedItem = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isLoggedIn = new MutableLiveData<>();
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    public BottomNavigationViewModel() {
-        mAuth = FirebaseAuth.getInstance();
+    public void setSelectedItem(int itemId) {
+        selectedItem.setValue(itemId);
+    }
+
+    public LiveData<Integer> getSelectedItem() {
+        return selectedItem;
     }
 
     public LiveData<Boolean> getIsLoggedIn() {
@@ -21,8 +24,11 @@ public class BottomNavigationViewModel extends ViewModel {
     }
 
     public void checkLoginStatus() {
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        isLoggedIn.setValue(currentUser != null);
+        if (mAuth.getCurrentUser() != null) {
+            isLoggedIn.setValue(true);
+        } else {
+            isLoggedIn.setValue(false);
+        }
     }
 }
 
