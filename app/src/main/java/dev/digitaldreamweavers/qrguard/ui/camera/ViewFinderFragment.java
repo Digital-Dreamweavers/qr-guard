@@ -179,7 +179,7 @@ public class ViewFinderFragment extends Fragment {
 
                                 try {
                                     URL barcodeURL = new URL(barcode.getRawValue());
-                                    Log.i(TAG, "Valid URL detected, now scanning: " + barcodeURL.toString());
+                                    Log.i(TAG, "Valid URL detected, now scanning: " + barcodeURL.getHost());
                                     floatingScanButton.setFabStatus(FloatingScanButton.FAB_STATUS_VALID, barcodeURL);
                                 } catch (Exception e) {
                                     Log.i(TAG, "Not a valid URL: " + barcode.getRawValue());

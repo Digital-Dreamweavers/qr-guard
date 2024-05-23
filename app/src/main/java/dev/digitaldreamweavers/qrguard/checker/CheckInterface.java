@@ -1,9 +1,8 @@
-package dev.digitaldreamweavers.qrguard.quisher;
+package dev.digitaldreamweavers.qrguard.checker;
 
-public interface SafetyReport {
+import java.net.URL;
 
-    // URL status.
-    // UNKNOWN = 0, SAFE = 1, UNSAFE = 2
+public interface CheckInterface {
     int safetyStatus = 0;
 
     // Total ratings
@@ -15,8 +14,6 @@ public interface SafetyReport {
     // Safe ratings
     int safeRatings = 0;
 
-
-
-
-
+    // URL to check
+    URL url = null;
 }

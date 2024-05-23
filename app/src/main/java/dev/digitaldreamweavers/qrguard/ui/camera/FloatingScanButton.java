@@ -24,7 +24,7 @@ public class FloatingScanButton extends Fragment {
     public final static int FAB_STATUS_INVALID = 1;
     public final static int FAB_STATUS_VALID = 2;
 
-    private String TAG = "FloatingScanButtonFragment";
+    private final String TAG = "FloatingScanButtonFragment";
 
     private FloatingScanButtonViewModel mViewModel;
 
@@ -41,7 +41,6 @@ public class FloatingScanButton extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_floating_scan_button, container, false);
-
         fab = view.findViewById(R.id.scanButton);
 
 

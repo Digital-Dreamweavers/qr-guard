@@ -22,7 +22,7 @@ public class ViewFinderViewModel extends ViewModel {
     private final MutableLiveData<Integer> fabStatus = new MutableLiveData<>();
 
     // Scanning statuses.
-    private String TAG = "ViewFinderViewModel";
+    private final String TAG = "ViewFinderViewModel";
 
 
 

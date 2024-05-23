@@ -34,8 +34,8 @@
             android:textColor="?attr/colorPrimary"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:drawableTop="@drawable/baseline_checklist_64"
-            android:drawablePadding="10dp"/>
+            android:drawablePadding="10dp"
+            app:drawableTopCompat="@drawable/baseline_checklist_64" />
         <TextView
             android:id="@+id/text_perm_camera_explainer"
             android:layout_height="wrap_content"

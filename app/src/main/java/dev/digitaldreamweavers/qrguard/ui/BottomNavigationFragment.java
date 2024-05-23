@@ -31,7 +31,7 @@ public class BottomNavigationFragment extends Fragment {
     private User localUser;
     private BottomNavigationViewModel mViewModel;
 
-    private String TAG = "BottomNavigationFragment";
+    private final String TAG = "BottomNavigationFragment";
 
     // Bind fragments to navigation bar.
     private final NavigationBarView.OnItemSelectedListener onItemSelected = item -> {

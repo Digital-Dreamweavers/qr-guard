@@ -21,7 +21,7 @@ import dev.digitaldreamweavers.qrguard.ui.setting.SettingActivity;
 
 public class ProfileFragment extends Fragment {
 
-    private String TAG = "ProfileFragment";
+    private final String TAG = "ProfileFragment";
     private ProfileViewModel mViewModel;
 
     public static ProfileFragment newInstance() {

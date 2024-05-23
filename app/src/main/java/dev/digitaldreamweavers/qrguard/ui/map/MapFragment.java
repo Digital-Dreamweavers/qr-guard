@@ -26,7 +26,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private MapViewModel mViewModel;
 
-    private String TAG = "MapFragment";
+    private final String TAG = "MapFragment";
 
     private GoogleMap mMap;
 
