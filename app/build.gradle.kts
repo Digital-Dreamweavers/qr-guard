@@ -35,6 +35,9 @@ android {
 
 dependencies {
 
+    implementation(platform(libs.okhttp3.okhttp.bom))
+    implementation(libs.okhttp)
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)
