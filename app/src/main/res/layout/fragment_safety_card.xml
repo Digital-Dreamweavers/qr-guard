@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.SafetyCard">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtRating"
+                style="@style/TextAppearance.Material3.HeadlineMedium"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text="@string/reportActivity_rating_UNKNOWN"
+                android:textAllCaps="false"
+                android:textStyle="normal|bold"
+                android:textColor="?attr/colorOnPrimaryContainer"
+                app:drawableTint="?attr/colorOnPrimaryContainer"
+                app:drawableTopCompat="@drawable/rating_unrated" />
+            <TextView
+                android:id="@+id/txtExplainer"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/reportActivity_unknown_explainer"
+                />
+            <TextView
+                android:id="@+id/txtDisclaimer"
+                style="@style/TextAppearance.Material3.BodySmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/reportActivity_firestore_disclaimer"
+                />
+        </LinearLayout>
+
+</FrameLayout>

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -13,22 +12,21 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import dev.digitaldreamweavers.qrguard.MainActivity;
 import dev.digitaldreamweavers.qrguard.R;
-import dev.digitaldreamweavers.qrguard.ui.profile.ProfileActivity;
+import dev.digitaldreamweavers.qrguard.User;
+
 public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 9001;
@@ -38,12 +36,12 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseFirestore db;
 
+    private User localUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -103,7 +101,10 @@ public class LoginActivity extends AppCompatActivity {
                         updateUI(user);
                         if (user != null) {
                             // Add user data to Firestore
-                            createUserInFirestore(user.getEmail());
+                            createUserInFirestore(user);
+
+                            // Start MainActivity
+                            startMainActivity();
                         }
                     } else {
                         // If sign in fails, display a message to the user.
@@ -112,6 +113,13 @@ public class LoginActivity extends AppCompatActivity {
                         updateUI(null);
                     }
                 });
+    }
+
+    // Start MainActivity
+    private void startMainActivity() {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish(); // Finish LoginActivity to prevent the user from going back to it after logging in
     }
 
     // Update UI based on FirebaseUser
@@ -126,19 +134,24 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // Add user data to Firestore
-    private void createUserInFirestore(String emailAddress) {
-        // Log the email address received
-        Log.d(TAG, "Email address received: " + emailAddress);
+    private void createUserInFirestore(FirebaseUser user) {
+        localUser = new User(user);
+        String uid = localUser.getUid();
+        String email = localUser.getEmail();
+
+        // Log the UID and email address received
+        Log.d(TAG, "UID received: " + uid);
+        Log.d(TAG, "Email address received: " + email);
 
         // Create a new user with email address
-        Map<String, Object> user = new HashMap<>();
-        user.put("email", emailAddress);
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("email", email);
 
-        // Add a new document with a generated ID
-        db.collection("users")
-                .add(user)
-                .addOnSuccessListener(documentReference -> Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId()))
-                .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
+        // Use the UID as the document ID
+        db.collection("users").document(uid)
+                .set(userData)
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "DocumentSnapshot successfully written with UID: " + uid))
+                .addOnFailureListener(e -> Log.w(TAG, "Error writing document", e));
     }
 
     // Fetch entire collection from Firestore (for testing)
@@ -160,6 +173,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 }
+
 
 
 

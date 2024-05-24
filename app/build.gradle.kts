@@ -35,6 +35,9 @@ android {
 
 dependencies {
 
+    implementation(platform(libs.okhttp3.okhttp.bom))
+    implementation(libs.okhttp)
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)
@@ -48,6 +51,13 @@ dependencies {
     implementation(libs.annotation)
     implementation(libs.firebase.analytics)
     implementation(libs.play.services.maps)
+    implementation(libs.firebase.inappmessaging.display)
+    implementation(libs.firebase.messaging)
+    implementation(libs.play.services.location)
+    implementation(libs.legacy.support.v4)
+    implementation(libs.activity)
+    implementation(libs.glide)
+    implementation(libs.play.services.analytics)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -60,6 +70,8 @@ dependencies {
     implementation(libs.camera.lifecycle)
     implementation(libs.camera.view)
     implementation(libs.camera.extensions)
+
+
 
     // MlKit Barcode Scanner: Required for QR functions
     implementation(libs.mlkit.barcode)
