@@ -11,10 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import android.widget.TextView;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
 import dev.digitaldreamweavers.qrguard.R;
 import dev.digitaldreamweavers.qrguard.ui.setting.SettingActivity;
 
@@ -48,29 +48,38 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
-        // TODO: Use the ViewModel
-        // fetchAndDisplayUserName();
+    public void onResume() {
+        super.onResume();
+        // Fetch and display user's data
+        fetchAndDisplayUserData();
     }
 
-    private void fetchAndDisplayUserName() {
-        // Fetch and display user's first and last name
+    private void fetchAndDisplayUserData() {
+        // Fetch and display user's data
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            for (UserInfo profile : user.getProviderData()) {
-                // Name can be extracted from Google Sign-In provider
-                if (profile.getProviderId().equals("google.com")) {
-                    // Cast the UserInfo object to GoogleSignInAccount
-                    GoogleSignInAccount googleAccount = (GoogleSignInAccount) profile;
-                    String fullName = googleAccount.getDisplayName();
-                    // Use fullName as needed
-                    Log.i(TAG, "Full name: " + fullName);
-                    break;
-                }
+            // Get user's email
+            String email = user.getEmail();
+            if (email != null && !email.isEmpty()) {
+                // Find the TextView for displaying the email
+                TextView textViewEmail = getView().findViewById(R.id.text_email);
+                // Set the user's email in the TextView
+                textViewEmail.setText(email);
+            }
+
+            // Get user's display name
+            String displayName = user.getDisplayName();
+            if (displayName != null && !displayName.isEmpty()) {
+                // Find the TextView for displaying the display name
+                TextView textViewName = getView().findViewById(R.id.text_name);
+                // Set the user's display name in the TextView
+                textViewName.setText(displayName);
             }
         }
     }
 }
+
+
+
+
 

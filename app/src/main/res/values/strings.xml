@@ -16,6 +16,7 @@
     <string name="profile_activity_title">Your Profile</string>
     <string name="profile">Profile</string>
     <string name="first_name">First</string>
+    <string name="email">Email</string>
     <string name="scans">Scans: %d</string>
     <string name="settings">Settings</string>
     <string name="Setting_head">QR Guard</string>
@@ -24,6 +25,7 @@
     <string name="large_text">Your Large Text Here</string>
     <string name="title_activity_report">ReportActivity</string>
     <string name="action_settings">Settings</string>
+    <string name="btn_back">Back to Profile</string>
     <string name="sign_out">Sign Out</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="btn_map">Map</string>
