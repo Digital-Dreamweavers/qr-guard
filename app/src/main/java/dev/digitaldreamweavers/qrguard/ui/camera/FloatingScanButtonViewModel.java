@@ -8,22 +8,25 @@ import androidx.lifecycle.ViewModel;
 import java.net.URL;
 
 public class FloatingScanButtonViewModel extends ViewModel {
-    private final MutableLiveData<Integer> fabStatus = new MutableLiveData<>();
+    private final MutableLiveData<FloatingScanButton.Status> fabStatus = new MutableLiveData<>();
     private final MutableLiveData<URL> barcodeUrl = new MutableLiveData<>();
 
-    public LiveData<Integer> getFabStatus() {
+    public LiveData<FloatingScanButton.Status> getFabStatus() {
         return fabStatus;
     }
 
-    public void setFabStatus(int status, @Nullable URL url) {
-        Integer statusInteger = status;
+    public void setFabStatus(FloatingScanButton.Status status, @Nullable URL url) {
 
         if (url != null) {
             barcodeUrl.setValue(url);
         }
 
-        if (!statusInteger.equals(fabStatus.getValue())) {
+        if (!status.equals(fabStatus.getValue())) {
             fabStatus.setValue(status);
         }
+    }
+
+    public URL getBarcodeUrl() {
+        return barcodeUrl.getValue();
     }
 }

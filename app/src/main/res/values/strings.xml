@@ -57,7 +57,7 @@
     <!-- Floating Scan Button Strings -->
     <string name="qr_status_waiting">Point your camera at a QR Code…</string>
     <string name="qr_status_invalid">This QR Code isn\'t a URL. Try another…</string>
-    <string name="qr_status_ready">URL found. Tap to scan!</string>
+    <string name="qr_status_ready">URL found. Tap to scan: \n %1$s</string>
     <string name="perform_a_scan_on_this_qr_code">Perform a scan on this QR Code</string>
 
 </resources>

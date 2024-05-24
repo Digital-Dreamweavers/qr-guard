@@ -19,6 +19,8 @@ public interface CheckInterface {
         VERIFIED_UNSAFE
     }
 
+    SafetyStatus status = SafetyStatus.UNKNOWN;
+
     // PhishTank checks provide less information than Firestore checks,
     // this tells ReportActivity to provide attribution and hide rating stats UI.
     boolean isPhishtankCheck = false;

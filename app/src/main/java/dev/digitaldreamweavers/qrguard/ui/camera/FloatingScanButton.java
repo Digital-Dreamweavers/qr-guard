@@ -1,5 +1,6 @@
 package dev.digitaldreamweavers.qrguard.ui.camera;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +17,15 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import java.net.URL;
 
 import dev.digitaldreamweavers.qrguard.R;
+import dev.digitaldreamweavers.qrguard.ReportActivity;
 
 public class FloatingScanButton extends Fragment {
 
-
-    public final static int FAB_STATUS_WAITING = 0;
-    public final static int FAB_STATUS_INVALID = 1;
-    public final static int FAB_STATUS_VALID = 2;
+    public enum Status {
+        WAITING,
+        INVALID,
+        VALID
+    }
 
     private final String TAG = "FloatingScanButtonFragment";
 
@@ -44,7 +47,6 @@ public class FloatingScanButton extends Fragment {
         fab = view.findViewById(R.id.scanButton);
 
 
-
         return view;
     }
 
@@ -54,23 +56,23 @@ public class FloatingScanButton extends Fragment {
         mViewModel = new ViewModelProvider(this).get(FloatingScanButtonViewModel.class);
 
         // Observe changes.
-        mViewModel.getFabStatus().observe(getViewLifecycleOwner(), this::updateFabText);
+        mViewModel.getFabStatus().observe(getViewLifecycleOwner(), this::updateFab);
 
         // TODO: Use the ViewModel
     }
 
-    public void setFabStatus(int status, @Nullable URL url) {
+    public void setFabStatus(Status status, @Nullable URL url) {
         mViewModel.setFabStatus(status, url);
     }
 
-    public void setFabStatus(int status) {
+    public void setFabStatus(Status status) {
         mViewModel.setFabStatus(status, null);
     }
 
     @UiThread
-    void updateFabText(int status) {
+    void updateFab(Status status) {
         switch (status) {
-            case FAB_STATUS_WAITING:
+            case WAITING:
                 fab.setIconResource(R.drawable.mystery_48dp);
                 fab.setText(R.string.qr_status_waiting);
 
@@ -80,20 +82,31 @@ public class FloatingScanButton extends Fragment {
                 fab.setClickable(false);
                 break;
 
-            case FAB_STATUS_INVALID:
+            case INVALID:
                 fab.setIconResource(R.drawable.unknown_48dp);
                 fab.setText(R.string.qr_status_invalid);
 
                 fab.setClickable(false);
                 break;
 
-            case FAB_STATUS_VALID:
+            case VALID:
                 fab.setIconResource(R.drawable.baseline_qr_code_scanner_64);
-                fab.setText(R.string.qr_status_ready);
+                fab.setMaxLines(2);
+                String scanMessage = getString(R.string.qr_status_ready, mViewModel.getBarcodeUrl().getHost());
+                fab.setText(scanMessage);
 
+                fab.setOnClickListener(v -> {
+                    navigateToSafetyReport();
+                });
                 fab.setClickable(true);
                 break;
         }
+    }
+
+    private void navigateToSafetyReport() {
+        Intent intent = new Intent(getContext(), ReportActivity.class);
+        intent.putExtra("url", mViewModel.getBarcodeUrl().toString());
+        startActivity(intent);
     }
 
 }

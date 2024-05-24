@@ -173,17 +173,17 @@ public class ViewFinderFragment extends Fragment {
                     .addOnSuccessListener(barcodes -> {
                         if (barcodes.isEmpty()) {
                             //Log.i(TAG, "No barcode detected.");
-                            floatingScanButton.setFabStatus(FloatingScanButton.FAB_STATUS_WAITING);
+                            floatingScanButton.setFabStatus(FloatingScanButton.Status.WAITING);
                         } else {
                             for (Barcode barcode : barcodes) {
 
                                 try {
                                     URL barcodeURL = new URL(barcode.getRawValue());
                                     Log.i(TAG, "Valid URL detected, now scanning: " + barcodeURL.getHost());
-                                    floatingScanButton.setFabStatus(FloatingScanButton.FAB_STATUS_VALID, barcodeURL);
+                                    floatingScanButton.setFabStatus(FloatingScanButton.Status.VALID, barcodeURL);
                                 } catch (Exception e) {
                                     Log.i(TAG, "Not a valid URL: " + barcode.getRawValue());
-                                    floatingScanButton.setFabStatus(FloatingScanButton.FAB_STATUS_INVALID);
+                                    floatingScanButton.setFabStatus(FloatingScanButton.Status.INVALID);
                                 }
                             }
                         }

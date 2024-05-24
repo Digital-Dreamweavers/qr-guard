@@ -2,9 +2,26 @@ package dev.digitaldreamweavers.qrguard.checker;
 
 import android.util.Log;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.URL;
 import java.util.Base64;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import dev.digitaldreamweavers.qrguard.R;
 import okhttp3.MediaType;
@@ -42,29 +59,34 @@ public class PhishTankCheck implements CheckInterface {
     // Not initialised yet so that we can gracefully disable PT checks if the URL is invalid.
     private URL ptURL;
 
+    private ExecutorService networkThread = Executors.newSingleThreadExecutor();
+
+    private String URLString;
+
     // Interface implementation.
     public boolean isPhishtankCheck = true;
+    public SafetyStatus status = SafetyStatus.UNKNOWN;
 
 
-    PhishTankCheck(URL url) {
+    public PhishTankCheck(String url) {
 
         // Prepare the URL to be put into the parameter of a POST request.
-        String encodedURL = Base64EncodeString(url.toString());
-        String urlString = (
+        String encodedURL = Base64EncodeString(url);
+        Log.i(TAG, "Encoded URL: " + encodedURL);
+        URLString = (
                     PHISHTANK_ENDPOINT +
                             "?url=" + encodedURL
         );
 
-        Log.i(TAG, "Checking URL: " + urlString);
-        checkPhishTank(urlString);
-
+        Log.i(TAG, "URL to check: " + URLString);
+        checkPhishTank(URLString);
     }
 
     private String Base64EncodeString(String input) {
         return Base64.getUrlEncoder().encodeToString(input.getBytes());
     }
 
-    private void checkPhishTank(String urlToCheck) {
+    public void checkPhishTank(String urlToCheck) {
         // Initialise the OkHttpClient
         OkHttpClient client = new OkHttpClient();
 
@@ -79,17 +101,105 @@ public class PhishTankCheck implements CheckInterface {
                 .method("POST", body)
                 .build();
 
-        try {
-            Response res = client.newCall(ptRequest).execute();
-            if (res.code() != 200) {
-                Log.w(TAG, "PhishTank responded wrongly: " + res.code());
-                return;
+        Callable<String> getResponse = new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                try {
+                    Response res = client.newCall(ptRequest).execute();
+                    if (res.code() != 200) {
+                        Log.w(TAG, "PhishTank responded wrongly: " + res.code());
+                        return "NO_RESPONSE";
+                    }
+                    String resBody = res.body().string();
+                    Log.i(TAG, "PhishTank response: " + resBody);
+                    res.close();
+                    return resBody;
+                } catch (IOException e) {
+                    Log.w(TAG, "Could not connect to PhishTank: " + e.getMessage());
+                    return "NO_RESPONSE";
+
+                }
             }
-            String resBody = res.body().string();
-            Log.i(TAG, "PhishTank response: " + resBody);
-            res.close();
+        };
+
+        Future<String> response = networkThread.submit(getResponse);
+
+        try {
+            String ptResponse = response.get();
+            handleResponse(ptResponse);
+        } catch (Exception e) {
+            Log.e(TAG, "Could not get PhishTank response: " + e.getMessage());
+        } finally {
+            networkThread.shutdown();
+        }
+
+    }
+
+    /*
+     *  Handling and XML Parsing of Phishtank response.
+     *
+     * PhishTank returns a response in XML format, which we need to parse.
+     * First, we need to check if <in_database> is true or false.
+     * If it's false, the response won't have <valid> or <verified> tags,
+     * which can throw a NullPointerException when parsing.
+     *
+     * If <valid> is true then it is a phishing link.
+     *
+     * */
+    private void handleResponse(String response) {
+        Log.i(TAG, "Handling PhishTank response.");
+        if (response.equals("NO_RESPONSE")) {
+            Log.w(TAG, "PhishTank did not respond.");
+            return;
+        }
+
+        // Prepare XML Parser
+        DocumentBuilderFactory xmlFactory = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder xmlBuilder = xmlFactory.newDocumentBuilder();
+
+            // Put PhishTank's Response into an input stream and feed it to the parser.
+            InputSource resInput = new InputSource(new StringReader(response));
+            Document xmlResponse = xmlBuilder.parse(resInput);
+
+            // Clean the XML response and check the <in_database> tag.
+            xmlResponse.getDocumentElement().normalize();
+            Element root = xmlResponse.getDocumentElement();
+
+            // Error checking our way through the XML response.
+            // It's important to cover all bases and recover in case PhishTank changes their response format.
+            NodeList inDatabase = root.getElementsByTagName("in_database");
+            if (inDatabase.getLength() == 0) {
+                throw new SAXException("No <in_database> tag found.");
+            }
+            Node inDatabaseNode = inDatabase.item(0);
+            if (inDatabaseNode.getNodeType() != Node.ELEMENT_NODE) {
+                throw new SAXException("<in_database> tag is not an element.");
+            }
+
+            // Now let's see if the URL is in the database.
+            if (inDatabaseNode.getTextContent().equals("true")) {
+                Node isValidPhish = root.getElementsByTagName("valid").item(0);
+                if (isValidPhish.getTextContent().equals("true")) {
+                    Log.i(TAG, "SAFETY REPORT: Phishing link.");
+                    status = SafetyStatus.UNVERIFIED_UNSAFE;
+                } else {
+                    Log.i(TAG, "SAFETY REPORT: Safe link.");
+                    status = SafetyStatus.UNVERIFIED_SAFE;
+                }
+            } else {
+                Log.i(TAG, "SAFETY REPORT: Unknown, not in PT Database.");
+                status = SafetyStatus.UNKNOWN;
+            }
+
+
+
+        } catch (ParserConfigurationException e) {
+            Log.e(TAG, "XML Config failed: " + e.getMessage());
         } catch (IOException e) {
-            Log.w(TAG, "Could not connect to PhishTank: " + e.getMessage());
+            Log.e(TAG, "Could not parse PhishTank response: " + e.getMessage());
+        } catch (SAXException e) {
+            Log.e(TAG, "PhishTank sent bad XML: " + e.getMessage());
         }
 
     }
