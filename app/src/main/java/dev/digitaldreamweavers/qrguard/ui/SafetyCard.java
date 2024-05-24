@@ -54,7 +54,7 @@ public class SafetyCard extends Fragment {
         Log.i(TAG, "Setting up report...");
         Log.i(TAG, check.toString());
         Check.SafetyStatus status = check.getSafetyStatus();
-        Log.i(TAG, "Status: " + status);
+        Log.i(TAG, "Status: " + status.toString());
 
         switch (status) {
             case VERIFIED_SAFE:

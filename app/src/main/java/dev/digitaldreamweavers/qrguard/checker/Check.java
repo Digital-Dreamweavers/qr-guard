@@ -3,6 +3,8 @@ package dev.digitaldreamweavers.qrguard.checker;
 import android.location.Location;
 
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Check.java
@@ -40,6 +42,17 @@ public abstract class Check {
 
     public boolean isPhishTank() {
         return isPhishTank;
+    }
+
+    // Total scans
+    protected long totalScans = 0;
+
+    public void setTotalScans(long totalScans) {
+        this.totalScans = totalScans;
+    }
+
+    public long getTotalScans() {
+        return totalScans;
     }
 
     // Total ratings
@@ -91,5 +104,20 @@ public abstract class Check {
         return url;
     }
 
+    public static String hashUrl(String url) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(url.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Error hashing URL", e);
+        }
+    }
 
 }

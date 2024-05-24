@@ -38,6 +38,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import dev.digitaldreamweavers.qrguard.checker.Check;
+import dev.digitaldreamweavers.qrguard.checker.FirestoreCheck;
 import dev.digitaldreamweavers.qrguard.checker.PhishTankCheck;
 import dev.digitaldreamweavers.qrguard.databinding.ActivityReportBinding;
 import dev.digitaldreamweavers.qrguard.ui.SafetyCard;
@@ -125,7 +126,10 @@ public class ReportActivity extends AppCompatActivity {
     }
 
     private Check performCheck(String url) {
-        return new PhishTankCheck(url);
+        Check fsc = new FirestoreCheck(url);
+        Log.i(TAG, "Checking Firestore...");
+        Log.i(TAG, "Firestore Status: " + fsc.getSafetyStatus());
+        return fsc;
     }
 
     private void getLocationAndStoreData(String url, String status) {
@@ -173,7 +177,7 @@ public class ReportActivity extends AppCompatActivity {
     }
 
     private void storeQRData(String url, String status, double latitude, double longitude) {
-        String documentId = hashUrl(url);
+        String documentId = Check.hashUrl(url);
 
         String locationName = getLocationName(latitude, longitude);
         Log.i(TAG, "Location Name: " + locationName);
@@ -234,21 +238,7 @@ public class ReportActivity extends AppCompatActivity {
 
         }
 
-    private String hashUrl(String url) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(url.getBytes());
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Error hashing URL", e);
-        }
-    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
