@@ -58,6 +58,7 @@ public class SafetyCard extends Fragment {
         Log.i(TAG, "Setting up report...");
         int background;
         int textColor;
+        Log.i(TAG, check.toString());
         Check.SafetyStatus status = check.getSafetyStatus();
         Log.i(TAG, "Status: " + status);
 
