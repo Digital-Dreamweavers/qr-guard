@@ -120,4 +120,20 @@ public abstract class Check {
         }
     }
 
+    private OnReadyListener onReadyListener;
+
+    public void setOnReadyListener(OnReadyListener onReadyListener) {
+        this.onReadyListener = onReadyListener;
+    }
+    protected void notifyOnReady() {
+        if (onReadyListener != null) {
+            onReadyListener.onReady(this);
+        }
+    }
+
+    public interface OnReadyListener {
+        void onReady(Check check);
+    }
+
+
 }

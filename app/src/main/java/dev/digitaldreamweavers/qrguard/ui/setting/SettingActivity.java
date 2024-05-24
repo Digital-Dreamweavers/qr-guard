@@ -35,13 +35,13 @@ public class SettingActivity extends AppCompatActivity {
         });
 
         // Find the back button
-        Button btnBack = findViewById(R.id.btn_back);
+        /*Button btnBack = findViewById(R.id.btn_back);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed(); // Simulate back button press
             }
-        });
+        });*/
     }
 }
 

@@ -2,6 +2,7 @@ package dev.digitaldreamweavers.qrguard.checker;
 
 import android.util.Log;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
@@ -36,9 +37,11 @@ public class FirestoreCheck extends Check {
             Log.e(TAG, "Error occurred: " + e.getMessage());
             setSafetyStatus(SafetyStatus.UNKNOWN);
         }
+        Log.i(TAG, "Check complete.");
     }
 
     private void checkFirestore() {
+
         // Find the hashed URL in Firestore.
         db.collection("qrData").document(hashedUrl).get()
                 .addOnSuccessListener(documentSnapshot -> {
@@ -47,18 +50,19 @@ public class FirestoreCheck extends Check {
                         parseScanCount(documentSnapshot.getLong("scanCount"));
                         setUrl(documentSnapshot.getString("url"));
                         parseStatus(documentSnapshot.getString("status"));
-
-                        // TODO: Calculate a status based on ratings.
+                        notifyOnReady();
                     } else {
                         // Document does not exist.
                         Log.i(TAG, "Document does not exist.");
                         setSafetyStatus(SafetyStatus.UNKNOWN);
+                        notifyOnReady();
                     }
                 })
                 .addOnFailureListener(e -> {
                     // Error occurred.
                     Log.e(TAG, "Error occurred: " + e.getMessage());
                     setSafetyStatus(SafetyStatus.UNKNOWN);
+                    notifyOnReady();
                 });
     }
 

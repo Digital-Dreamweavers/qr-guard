@@ -72,7 +72,6 @@ public class ReportActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
 
-
         // Initialize Location Services
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -80,8 +79,6 @@ public class ReportActivity extends AppCompatActivity {
         String urlToCheck = intent.getStringExtra("url");
         Log.i(TAG, "Found: " + urlToCheck);
 
-        currentCheck = performCheck(urlToCheck);
-        Log.i(TAG, currentCheck.getSafetyStatus().toString());
 
 
         binding = ActivityReportBinding.inflate(getLayoutInflater());
@@ -93,44 +90,52 @@ public class ReportActivity extends AppCompatActivity {
         // Get the fragment.
         SafetyCard safetyCardFragment = (SafetyCard) getSupportFragmentManager().findFragmentById(R.id.SafetyCardContainer);
 
-        // Setup the Safety card
-        if (safetyCardFragment != null) {
-            mVMSafetyCard = new ViewModelProvider(safetyCardFragment).get(SafetyCardViewModel.class);
-            mVMSafetyCard.setChecker(currentCheck);
-        } else {
-            Log.e(TAG, "SafetyCardFragment is null.");
-        }
+        // Perform Firestore check.
+        currentCheck = new FirestoreCheck(urlToCheck);
+        currentCheck.setOnReadyListener(check -> {
+            Log.i(TAG, "Firestore Check is ready.");
+            if (currentCheck.getSafetyStatus() == Check.SafetyStatus.UNKNOWN) {
+                // Perform a secondary Phishtank Check and find a rating there.
+                Log.i(TAG, "Performing PhishTank Check...");
+                Check ptCheck = new PhishTankCheck(urlToCheck);
+                currentCheck.setSafetyStatus(ptCheck.getSafetyStatus());
+                currentCheck.setPhishTank(true);
+            }
+            // Setup the Safety card
+            if (safetyCardFragment != null) {
+                mVMSafetyCard = new ViewModelProvider(safetyCardFragment).get(SafetyCardViewModel.class);
+                mVMSafetyCard.setChecker(currentCheck);
+
+                // Place location into checker
+
+                FirebaseUser currentUser = auth.getCurrentUser();
+                if (currentUser != null) {
+                    // Request location permission if not granted
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(this,
+                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                LOCATION_PERMISSION_REQUEST_CODE);
+                    } else {
+                        getLocationAndStoreData(urlToCheck, currentCheck.getSafetyStatus().toString());
+                    }
+                } else {
+                    Log.w(TAG, "User is not authenticated.");
+                }
+
+            } else {
+                Log.e(TAG, "SafetyCardFragment is null.");
+            }
+        });
+
 
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.map, new MapFragment())
                 .commit();
 
-        FirebaseUser currentUser = auth.getCurrentUser();
-        if (currentUser != null) {
-            // Request location permission if not granted
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        LOCATION_PERMISSION_REQUEST_CODE);
-            } else {
-                getLocationAndStoreData(urlToCheck, currentCheck.getSafetyStatus().toString());
-            }
-        } else {
-            Log.w(TAG, "User is not authenticated.");
-        }
-
-        // Subscribe to FCM topic for receiving notifications about unsafe QR codes
-        FirebaseMessaging.getInstance().subscribeToTopic("unsafe_qr_codes");
     }
 
-    private Check performCheck(String url) {
-        Check fsc = new FirestoreCheck(url);
-        Log.i(TAG, "Checking Firestore...");
-        Log.i(TAG, "Firestore Status: " + fsc.getSafetyStatus());
-        return fsc;
-    }
 
     private void getLocationAndStoreData(String url, String status) {
         try {
@@ -248,39 +253,30 @@ public class ReportActivity extends AppCompatActivity {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Intent intent = getIntent();
                 String urlToCheck = intent.getStringExtra("url");
-                Check checker = performCheck(urlToCheck);
-                FirebaseUser currentUser = auth.getCurrentUser();
-                if (currentUser != null) {
-                    getLocationAndStoreData(urlToCheck, checker.getSafetyStatus().toString());
+                Check checker = new FirestoreCheck(urlToCheck);
+                checker.setOnReadyListener(check -> {
+                    FirebaseUser currentUser = auth.getCurrentUser();
+                    if (currentUser != null) {
+                        getLocationAndStoreData(urlToCheck, checker.getSafetyStatus().toString());
 
-                }
+                    }
+                });
             } else {
                 Log.w(TAG, "Location permission denied.");
                 Intent intent = getIntent();
                 String urlToCheck = intent.getStringExtra("url");
-                Check checker = performCheck(urlToCheck);
-                FirebaseUser currentUser = auth.getCurrentUser();
-                if (currentUser != null) {
-                    storeQRData(urlToCheck, checker.getSafetyStatus().toString(), latitude, longitude); // Store data without location
-                }
+                Check checker = new FirestoreCheck(urlToCheck);
+                checker.setOnReadyListener(check -> {
+                    FirebaseUser currentUser = auth.getCurrentUser();
+                    if (currentUser != null) {
+                        storeQRData(urlToCheck, checker.getSafetyStatus().toString(), latitude, longitude); // Store data without location
+                    }
+                });
+
             }
         }
     }
 
-
-    private void showPopUpMessage(String title, String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title)
-                .setMessage(message)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User clicked OK button
-                        dialog.dismiss();
-                    }
-                });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
 
 }
 
