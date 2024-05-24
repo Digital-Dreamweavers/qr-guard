@@ -62,4 +62,16 @@
     <string name="qr_status_ready">URL found. Tap to scan: \n %1$s</string>
     <string name="perform_a_scan_on_this_qr_code">Perform a scan on this QR Code</string>
 
+    <!-- Report Activity Strings -->
+    <string name="reportActivity_url">%1$s</string>
+    <string name="reportActivity_rating_SAFE">Likely Safe*</string>
+    <string name="reportActivity_rating_UNSAFE">Likely Unsafe*</string>
+    <string name="reportActivity_rating_UNKNOWN">Unrated*</string>
+    <string name="reportActivity_unknown_explainer">Neither our database nor PhishTank has enough ratings on this website. Proceed with caution.</string>
+    <string name="reportActivity_unsafe_explainer">This URL is likely dangerous and may be trying to steal your information.</string>
+    <string name="reportActivity_safe_explainer">This URL is likely legitimate and should be safe to proceed.</string>
+    <string name="reportActivity_phishtank_disclaimer">*This rating is retrieved on PhishTank, a crowd-sourced phishing database.</string>
+    <string name="reportActivity_firestore_disclaimer">*This rating is based on croud-sourced user reports.</string>
+
+
 </resources>

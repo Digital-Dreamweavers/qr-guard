@@ -27,6 +27,7 @@ public class ReportActivity extends AppCompatActivity {
         Log.i(TAG, "Found: " + urlToCheck);
 
         CheckInterface checker = performCheck(urlToCheck);
+        Log.i(TAG, checker.status.toString());
 
         binding = ActivityReportBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
