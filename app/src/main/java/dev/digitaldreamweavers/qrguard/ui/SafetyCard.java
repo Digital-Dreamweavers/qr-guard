@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import dev.digitaldreamweavers.qrguard.R;
 import dev.digitaldreamweavers.qrguard.checker.Check;
@@ -23,6 +24,8 @@ import dev.digitaldreamweavers.qrguard.checker.Check;
 public class SafetyCard extends Fragment {
 
     private SafetyCardViewModel mViewModel;
+
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     private static final String TAG = "SafetyCard";
 
@@ -34,12 +37,17 @@ public class SafetyCard extends Fragment {
         return new SafetyCard();
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Initialize Firebase Analytics
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireContext());
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_safety_card, container, false);
-
 
         // Get text components.
         txtRating = view.findViewById(R.id.txtRating);
@@ -58,7 +66,7 @@ public class SafetyCard extends Fragment {
 
         switch (status) {
             case VERIFIED_SAFE:
-            case UNVERIFIED_SAFE: ;
+            case UNVERIFIED_SAFE:
                 txtRating.setText(R.string.reportActivity_rating_SAFE);
                 txtExplainer.setText(R.string.reportActivity_safe_explainer);
                 break;
@@ -66,6 +74,8 @@ public class SafetyCard extends Fragment {
             case UNVERIFIED_UNSAFE:
                 txtRating.setText(R.string.reportActivity_rating_UNSAFE);
                 txtExplainer.setText(R.string.reportActivity_unsafe_explainer);
+                // Log event with Firebase Analytics for unsafe QR code
+                logUnsafeQRCodeEvent();
                 break;
 
             // Includes Unknown rating as well.
@@ -80,7 +90,14 @@ public class SafetyCard extends Fragment {
         } else {
             txtDisclaimer.setText(R.string.reportActivity_firestore_disclaimer);
         }
+    }
 
+    // Method to log an event for unsafe QR code with Firebase Analytics
+    private void logUnsafeQRCodeEvent() {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "SafetyCardFragment");
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "Safety Card Screen");
+        mFirebaseAnalytics.logEvent("UnsafeQRCodeDetected", bundle);
     }
 
     @Override
@@ -90,8 +107,8 @@ public class SafetyCard extends Fragment {
         mViewModel.getChecker().observe(getViewLifecycleOwner(), this::setupReport);
     }
 
-
     public void setCheck(Check currentCheck) {
         mViewModel.setChecker(currentCheck);
     }
 }
+

@@ -45,6 +45,8 @@ import dev.digitaldreamweavers.qrguard.ui.SafetyCard;
 import dev.digitaldreamweavers.qrguard.ui.SafetyCardViewModel;
 import dev.digitaldreamweavers.qrguard.ui.map.MapFragment;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 public class ReportActivity extends AppCompatActivity {
 
     private ActivityReportBinding binding;
@@ -53,6 +55,8 @@ public class ReportActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private FirebaseAuth auth;
+
+    private FirebaseAnalytics mFirebaseAnalytics;
     private FusedLocationProviderClient fusedLocationClient;
     private double latitude = 0.0;
     private double longitude = 0.0;
@@ -235,15 +239,30 @@ public class ReportActivity extends AppCompatActivity {
                                 });
                     }
                 }else{
-                        Log.w(TAG, "Error getting document", task.getException());
-                    }
+                    Log.w(TAG, "Error getting document", task.getException());
                 }
+            }
 
         });
 
+
+    }
+
+    private String hashUrl(String url) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(url.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Error hashing URL", e);
         }
-
-
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -278,8 +297,34 @@ public class ReportActivity extends AppCompatActivity {
     }
 
 
-}
 
+
+    private void showPopUpMessage(String title, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked OK button
+                        dialog.dismiss();
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        // Log event when user scans an unsafe QR code
+        if (currentCheck.getSafetyStatus().equals("Unsafe")) {
+            Bundle params = new Bundle();
+            params.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "ReportActivity");
+            params.putString(FirebaseAnalytics.Param.SCREEN_NAME, "Unsafe QR Code Detected");
+            mFirebaseAnalytics.getInstance(this).logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, params);
+
+        }
+
+
+    }
+
+}
 
 
 

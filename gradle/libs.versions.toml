@@ -28,6 +28,8 @@ playServicesLocation = "21.2.0"
 legacySupportV4 = "1.0.0"
 activity = "1.9.0"
 glide = "5.0.0-rc01"
+googleGmsGoogleServices = "4.4.1"
+playServicesAnalytics = "18.0.4"
 
 [libraries]
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
@@ -62,8 +64,10 @@ play-services-location = { group = "com.google.android.gms", name = "play-servic
 legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+play-services-analytics = { group = "com.google.android.gms", name = "play-services-analytics", version.ref = "playServicesAnalytics" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 googleAndroidLibrariesMapsplatformSecretsGradlePlugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "googleAndroidLibrariesMapsplatformSecretsGradlePlugin" }
+googleGmsGoogleServices = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
 
