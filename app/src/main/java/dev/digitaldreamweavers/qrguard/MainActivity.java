@@ -28,7 +28,6 @@ import dev.digitaldreamweavers.qrguard.ui.BottomNavigationFragment;
  *  ATTENTION IF COMPILING FROM SOURCE!
  *  When signing in with Google, you may get a DEVELOPER_ERROR 10 result in Logcat.
  *  This is because Google Sign-in will NOT work without an authorised SHA-1 fingerprint in Firebase,
- *  A signed APK file has been provided in the submission so that Google Sign-in can be used.
  *
  */
 

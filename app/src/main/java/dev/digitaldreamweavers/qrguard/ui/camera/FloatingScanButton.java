@@ -1,18 +1,15 @@
 package dev.digitaldreamweavers.qrguard.ui.camera;
 
-import androidx.annotation.UiThread;
-import androidx.lifecycle.ViewModelProvider;
-
-import android.content.res.ColorStateList;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.UiThread;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
@@ -27,7 +24,7 @@ public class FloatingScanButton extends Fragment {
     public final static int FAB_STATUS_INVALID = 1;
     public final static int FAB_STATUS_VALID = 2;
 
-    private String TAG = "FloatingScanButtonFragment";
+    private final String TAG = "FloatingScanButtonFragment";
 
     private FloatingScanButtonViewModel mViewModel;
 
@@ -44,7 +41,6 @@ public class FloatingScanButton extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_floating_scan_button, container, false);
-
         fab = view.findViewById(R.id.scanButton);
 
 
