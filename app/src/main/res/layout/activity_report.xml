@@ -3,35 +3,63 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
     tools:context=".ReportActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/urlTextView"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:layout_margin="16dp"
-            style="@style/TextAppearance.Material3.HeadlineSmall" />
+            android:orientation="vertical"
+            android:layout_marginHorizontal="16dp">
 
-      <androidx.fragment.app.FragmentContainerView
-          android:id="@+id/SafetyCardContainer"
-          android:orientation="vertical"
-          android:layout_width="match_parent"
-          android:layout_height="0dp"
-          android:layout_weight="2"
-          android:name="dev.digitaldreamweavers.qrguard.ui.SafetyCard"
-          tools:layout="@layout/fragment_safety_card">
+            <TextView
+                android:id="@+id/urlTextView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0"
+                android:layout_marginVertical="8dp"
+                style="@style/TextAppearance.Material3.HeadlineSmall" />
 
-      </androidx.fragment.app.FragmentContainerView>
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/SafetyCardContainer"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:name="dev.digitaldreamweavers.qrguard.ui.SafetyCard"
+                tools:layout="@layout/fragment_safety_card">
 
-    </LinearLayout>
+            </androidx.fragment.app.FragmentContainerView>
 
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginVertical="8dp">
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
 
+                </androidx.fragment.app.FragmentContainerView>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        style="@style/Widget.Material3.BottomAppBar"
+        app:navigationIcon="@drawable/ic_round_qr_code_scanner_24"
+        app:menu="@menu/bottom_report_bar"
+        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

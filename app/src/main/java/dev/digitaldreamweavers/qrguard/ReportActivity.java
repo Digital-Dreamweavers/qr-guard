@@ -9,6 +9,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -45,6 +46,8 @@ import dev.digitaldreamweavers.qrguard.checker.Check;
 import dev.digitaldreamweavers.qrguard.checker.PhishTankCheck;
 import dev.digitaldreamweavers.qrguard.databinding.ActivityReportBinding;
 import dev.digitaldreamweavers.qrguard.ui.SafetyCard;
+import dev.digitaldreamweavers.qrguard.ui.SafetyCardViewModel;
+import dev.digitaldreamweavers.qrguard.ui.map.MapFragment;
 
 public class ReportActivity extends AppCompatActivity {
 
@@ -82,21 +85,31 @@ public class ReportActivity extends AppCompatActivity {
         String urlToCheck = intent.getStringExtra("url");
         Log.i(TAG, "Found: " + urlToCheck);
 
-        Check checker = performCheck(urlToCheck);
-        Log.i(TAG, checker.getSafetyStatus().toString());
+        currentCheck = performCheck(urlToCheck);
+        Log.i(TAG, currentCheck.getSafetyStatus().toString());
+
 
         binding = ActivityReportBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        TextView urlTextView = findViewById(R.id.urlTextView);
+        urlTextView.setText(urlToCheck);
+
         // Get the fragment.
         SafetyCard safetyCardFragment = (SafetyCard) getSupportFragmentManager().findFragmentById(R.id.SafetyCardContainer);
 
+        // Setup the Safety card
         if (safetyCardFragment != null) {
             mVMSafetyCard = new ViewModelProvider(safetyCardFragment).get(SafetyCardViewModel.class);
             mVMSafetyCard.setChecker(currentCheck);
         } else {
             Log.e(TAG, "SafetyCardFragment is null.");
         }
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.map, new MapFragment())
+                .commit();
 
         FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser != null) {
@@ -107,7 +120,7 @@ public class ReportActivity extends AppCompatActivity {
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         LOCATION_PERMISSION_REQUEST_CODE);
             } else {
-                getLocationAndStoreData(urlToCheck, checker.getSafetyStatus().toString());
+                getLocationAndStoreData(urlToCheck, currentCheck.getSafetyStatus().toString());
             }
         } else {
             Log.w(TAG, "User is not authenticated.");
