@@ -1,5 +1,6 @@
 package dev.digitaldreamweavers.qrguard.ui;
 
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -63,23 +64,17 @@ public class SafetyCard extends Fragment {
         switch (status) {
             case VERIFIED_SAFE:
             case UNVERIFIED_SAFE: ;
-                background = com.google.android.material.R.attr.colorSurface;
-                textColor = com.google.android.material.R.attr.colorOnSurface;
                 txtRating.setText(R.string.reportActivity_rating_SAFE);
                 txtExplainer.setText(R.string.reportActivity_safe_explainer);
                 break;
             case VERIFIED_UNSAFE:
             case UNVERIFIED_UNSAFE:
-                background = com.google.android.material.R.attr.colorErrorContainer;
-                textColor = com.google.android.material.R.attr.colorOnErrorContainer;
                 txtRating.setText(R.string.reportActivity_rating_UNSAFE);
                 txtExplainer.setText(R.string.reportActivity_unsafe_explainer);
                 break;
 
             // Includes Unknown rating as well.
             default:
-                background = com.google.android.material.R.attr.colorSurface;
-                textColor = com.google.android.material.R.attr.colorOnSurface;
                 txtRating.setText(R.string.reportActivity_rating_UNKNOWN);
                 txtExplainer.setText(R.string.reportActivity_unknown_explainer);
                 break;
@@ -91,10 +86,10 @@ public class SafetyCard extends Fragment {
             txtDisclaimer.setText(R.string.reportActivity_firestore_disclaimer);
         }
 
-        reportCard.setCardBackgroundColor(background);
-        txtRating.setTextColor(textColor);
-        txtExplainer.setTextColor(textColor);
-        txtDisclaimer.setTextColor(textColor);
+        //reportCard.setCardBackgroundColor(background);
+        //txtRating.setTextColor(textColor);
+        //txtExplainer.setTextColor(textColor);
+        //txtDisclaimer.setTextColor(textColor);
 
     }
 
