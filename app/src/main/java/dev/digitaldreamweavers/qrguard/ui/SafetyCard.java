@@ -23,11 +23,9 @@ import dev.digitaldreamweavers.qrguard.checker.Check;
 public class SafetyCard extends Fragment {
 
     private SafetyCardViewModel mViewModel;
-    private Check check;
 
     private static final String TAG = "SafetyCard";
 
-    private MaterialCardView reportCard;
     private TextView txtRating;
     private TextView txtExplainer;
     private TextView txtDisclaimer;
@@ -42,8 +40,6 @@ public class SafetyCard extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_safety_card, container, false);
 
-        reportCard = view.findViewById(R.id.reportCard);
-        reportCard.setClickable(false);
 
         // Get text components.
         txtRating = view.findViewById(R.id.txtRating);
@@ -56,8 +52,6 @@ public class SafetyCard extends Fragment {
     // Adjust the colour scheme of the safetycard based on ratings.
     private void setupReport(Check check) {
         Log.i(TAG, "Setting up report...");
-        int background;
-        int textColor;
         Log.i(TAG, check.toString());
         Check.SafetyStatus status = check.getSafetyStatus();
         Log.i(TAG, "Status: " + status);
@@ -86,11 +80,6 @@ public class SafetyCard extends Fragment {
         } else {
             txtDisclaimer.setText(R.string.reportActivity_firestore_disclaimer);
         }
-
-        //reportCard.setCardBackgroundColor(background);
-        //txtRating.setTextColor(textColor);
-        //txtExplainer.setTextColor(textColor);
-        //txtDisclaimer.setTextColor(textColor);
 
     }
 
