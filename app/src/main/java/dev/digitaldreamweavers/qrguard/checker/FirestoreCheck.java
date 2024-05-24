@@ -12,7 +12,7 @@ import java.net.URL;
  * @version 1.0
  * @since 1.0
 **/
-public class FirestoreCheck implements CheckInterface {
+public class FirestoreCheck extends Check {
 
     private final String TAG = "Checker (Firestore)";
 

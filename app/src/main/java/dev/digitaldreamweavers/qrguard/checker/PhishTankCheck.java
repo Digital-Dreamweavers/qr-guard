@@ -14,7 +14,6 @@ import java.io.StringReader;
 import java.net.URL;
 import java.util.Base64;
 import java.util.concurrent.Callable;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -42,7 +41,7 @@ import okhttp3.Response;
  * @since 1.0
  */
 
-public class PhishTankCheck implements CheckInterface {
+public class PhishTankCheck extends Check {
 
     private final String TAG = "Checker (PhishTank)";
 
@@ -63,12 +62,11 @@ public class PhishTankCheck implements CheckInterface {
 
     private String URLString;
 
-    // Interface implementation.
-    public boolean isPhishtankCheck = true;
-    public SafetyStatus status = SafetyStatus.UNKNOWN;
 
 
     public PhishTankCheck(String url) {
+        setPhishTank(true);
+        setUrl(url);
 
         // Prepare the URL to be put into the parameter of a POST request.
         String encodedURL = Base64EncodeString(url);
@@ -126,6 +124,7 @@ public class PhishTankCheck implements CheckInterface {
 
         try {
             String ptResponse = response.get();
+            Log.i(TAG, "PhishTank response: " + ptResponse);
             handleResponse(ptResponse);
         } catch (Exception e) {
             Log.e(TAG, "Could not get PhishTank response: " + e.getMessage());
@@ -182,14 +181,14 @@ public class PhishTankCheck implements CheckInterface {
                 Node isValidPhish = root.getElementsByTagName("valid").item(0);
                 if (isValidPhish.getTextContent().equals("true")) {
                     Log.i(TAG, "SAFETY REPORT: Phishing link.");
-                    status = SafetyStatus.UNVERIFIED_UNSAFE;
+                    setSafetyStatus(SafetyStatus.UNVERIFIED_UNSAFE);
                 } else {
                     Log.i(TAG, "SAFETY REPORT: Safe link.");
-                    status = SafetyStatus.UNVERIFIED_SAFE;
+                    setSafetyStatus(SafetyStatus.UNVERIFIED_SAFE);
                 }
             } else {
                 Log.i(TAG, "SAFETY REPORT: Unknown, not in PT Database.");
-                status = SafetyStatus.UNKNOWN;
+                setSafetyStatus(SafetyStatus.UNKNOWN);
             }
 
 
