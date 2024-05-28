@@ -13,12 +13,20 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
+            <ImageView
+                android:id="@+id/imgRating"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/rating_unrated"
+                app:tint="?attr/colorPrimary">
+            </ImageView>
+
             <TextView
                 android:id="@+id/txtRating"
                 style="@style/TextAppearance.Material3.HeadlineMedium"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_margin="16dp"
+                android:layout_marginBottom="16dp"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:text="@string/reportActivity_rating_UNKNOWN"
@@ -26,7 +34,7 @@
                 android:textStyle="normal|bold"
                 android:textColor="?attr/colorOnPrimaryContainer"
                 app:drawableTint="?attr/colorOnPrimaryContainer"
-                app:drawableTopCompat="@drawable/rating_unrated" />
+                />
             <TextView
                 android:id="@+id/txtExplainer"
                 style="@style/TextAppearance.Material3.BodyLarge"
