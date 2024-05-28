@@ -3,6 +3,7 @@ package dev.digitaldreamweavers.qrguard.ui;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
@@ -32,6 +34,8 @@ public class SafetyCard extends Fragment {
     private TextView txtRating;
     private TextView txtExplainer;
     private TextView txtDisclaimer;
+
+    private ImageView ratingIcon;
 
     public static SafetyCard newInstance() {
         return new SafetyCard();
@@ -53,6 +57,7 @@ public class SafetyCard extends Fragment {
         txtRating = view.findViewById(R.id.txtRating);
         txtExplainer = view.findViewById(R.id.txtExplainer);
         txtDisclaimer = view.findViewById(R.id.txtDisclaimer);
+        ratingIcon = view.findViewById(R.id.imgRating);
 
         return view;
     }
@@ -68,11 +73,13 @@ public class SafetyCard extends Fragment {
             case VERIFIED_SAFE:
             case UNVERIFIED_SAFE:
                 txtRating.setText(R.string.reportActivity_rating_SAFE);
+                ratingIcon.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.rating_safe));
                 txtExplainer.setText(R.string.reportActivity_safe_explainer);
                 break;
             case VERIFIED_UNSAFE:
             case UNVERIFIED_UNSAFE:
                 txtRating.setText(R.string.reportActivity_rating_UNSAFE);
+                ratingIcon.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.rating_dangerous));
                 txtExplainer.setText(R.string.reportActivity_unsafe_explainer);
                 // Log event with Firebase Analytics for unsafe QR code
                 logUnsafeQRCodeEvent();
@@ -81,6 +88,7 @@ public class SafetyCard extends Fragment {
             // Includes Unknown rating as well.
             default:
                 txtRating.setText(R.string.reportActivity_rating_UNKNOWN);
+                ratingIcon.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.rating_unrated));
                 txtExplainer.setText(R.string.reportActivity_unknown_explainer);
                 break;
         }
