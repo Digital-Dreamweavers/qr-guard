@@ -71,7 +71,7 @@ public class FirestoreCheck extends Check {
         try {
             SafetyStatus status = SafetyStatus.valueOf(strStatus);
             Log.i(TAG, "Status String: " + strStatus);
-            setSafetyStatus(SafetyStatus.UNVERIFIED_UNSAFE);
+            setSafetyStatus(status);
             Log.i(TAG, "Status: " + getSafetyStatus().toString());
         } catch (IllegalArgumentException e) {
             // Invalid status.
