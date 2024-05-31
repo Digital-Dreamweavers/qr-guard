@@ -31,6 +31,7 @@ public class FirestoreCheck extends Check {
         hashedUrl = hashUrl(url);
         Log.i(TAG, "Checking Hash: " + hashedUrl);
         db = FirebaseFirestore.getInstance();
+        /*
         try {
             checkFirestore();
         } catch (Exception e) {
@@ -38,9 +39,11 @@ public class FirestoreCheck extends Check {
             setSafetyStatus(SafetyStatus.UNKNOWN);
         }
         Log.i(TAG, "Check complete.");
+         */
     }
 
-    private void checkFirestore() {
+    @Override
+    public void check() {
 
         // Find the hashed URL in Firestore.
         db.collection("qrData").document(hashedUrl).get()

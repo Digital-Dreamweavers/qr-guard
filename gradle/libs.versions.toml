@@ -2,6 +2,7 @@
 agp = "8.4.1"
 firebaseBom = "33.0.0"
 junit = "4.13.2"
+junitJupiter = "5.8.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 appcompat = "1.6.1"
@@ -30,6 +31,20 @@ activity = "1.9.0"
 glide = "5.0.0-rc01"
 googleGmsGoogleServices = "4.4.1"
 playServicesAnalytics = "18.0.4"
+core = "1.5.0"
+robolectric = "4.12.2"
+runner = "1.5.2"
+rules = "1.5.0"
+truth = "1.5.0"
+espressoContrib = "3.5.1"
+espressoIntents = "3.5.1"
+espressoAccessibility = "3.5.1"
+espressoWeb = "3.5.1"
+idlingConcurrent = "3.5.1"
+espressoIdlingResource = "3.5.1"
+mockitoCore = "5.12.0"
+mockitoKotlin = "5.3.1"
+mockk = "1.13.11"
 
 [libraries]
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
@@ -37,6 +52,7 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junitJupiter" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
@@ -65,6 +81,20 @@ legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", ver
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 play-services-analytics = { group = "com.google.android.gms", name = "play-services-analytics", version.ref = "playServicesAnalytics" }
+core = { group = "androidx.test", name = "core", version.ref = "core" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
+rules = { group = "androidx.test", name = "rules", version.ref = "rules" }
+truth = { group = "androidx.test.ext", name = "truth", version.ref = "truth" }
+espresso-contrib = { group = "androidx.test.espresso", name = "espresso-contrib", version.ref = "espressoContrib" }
+espresso-intents = { group = "androidx.test.espresso", name = "espresso-intents", version.ref = "espressoIntents" }
+espresso-accessibility = { group = "androidx.test.espresso", name = "espresso-accessibility", version.ref = "espressoAccessibility" }
+espresso-web = { group = "androidx.test.espresso", name = "espresso-web", version.ref = "espressoWeb" }
+idling-concurrent = { group = "androidx.test.espresso.idling", name = "idling-concurrent", version.ref = "idlingConcurrent" }
+espresso-idling-resource = { group = "androidx.test.espresso", name = "espresso-idling-resource", version.ref = "espressoIdlingResource" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockitoCore" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

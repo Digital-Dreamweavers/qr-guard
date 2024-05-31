@@ -8,4 +8,8 @@ package dev.digitaldreamweavers.qrguard.checker;
  */
 public class RetrieveCheck extends Check {
 
+    @Override
+    public void check() {
+
+    }
 }

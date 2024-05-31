@@ -102,6 +102,7 @@ public class ReportActivity extends AppCompatActivity {
                 // Perform a secondary Phishtank Check and find a rating there.
                 Log.i(TAG, "Performing PhishTank Check...");
                 Check ptCheck = new PhishTankCheck(urlToCheck);
+                ptCheck.check();
                 currentCheck.setSafetyStatus(ptCheck.getSafetyStatus());
                 currentCheck.setPhishTank(true);
             }
@@ -131,6 +132,8 @@ public class ReportActivity extends AppCompatActivity {
                 Log.e(TAG, "SafetyCardFragment is null.");
             }
         });
+
+        currentCheck.check();
 
 
         getSupportFragmentManager()

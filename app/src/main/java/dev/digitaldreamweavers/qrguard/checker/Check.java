@@ -131,6 +131,8 @@ public abstract class Check {
         }
     }
 
+    public abstract void check();
+
     public interface OnReadyListener {
         void onReady(Check check);
     }

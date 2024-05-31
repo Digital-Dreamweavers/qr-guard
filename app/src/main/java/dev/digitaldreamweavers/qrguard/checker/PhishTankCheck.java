@@ -77,14 +77,16 @@ public class PhishTankCheck extends Check {
         );
 
         Log.i(TAG, "URL to check: " + URLString);
-        checkPhishTank(URLString);
+        //checkPhishTank(URLString);
     }
 
     private String Base64EncodeString(String input) {
         return Base64.getUrlEncoder().encodeToString(input.getBytes());
     }
 
-    public void checkPhishTank(String urlToCheck) {
+    @Override
+    public void check() {
+        String urlToCheck = URLString;
         // Initialise the OkHttpClient
         OkHttpClient client = new OkHttpClient();
 
@@ -145,7 +147,7 @@ public class PhishTankCheck extends Check {
      * If <valid> is true then it is a phishing link.
      *
      * */
-    private void handleResponse(String response) {
+    public void handleResponse(String response) {
         Log.i(TAG, "Handling PhishTank response.");
         if (response.equals("NO_RESPONSE")) {
             Log.w(TAG, "PhishTank did not respond.");
@@ -179,6 +181,11 @@ public class PhishTankCheck extends Check {
             // Now let's see if the URL is in the database.
             if (inDatabaseNode.getTextContent().equals("true")) {
                 Node isValidPhish = root.getElementsByTagName("valid").item(0);
+                if (isValidPhish == null) {
+                    Log.w(TAG, "PhishTank response is missing <valid> tag.");
+                    setSafetyStatus(SafetyStatus.UNKNOWN);
+                    return;
+                }
                 if (isValidPhish.getTextContent().equals("true")) {
                     Log.i(TAG, "SAFETY REPORT: Phishing link.");
                     setSafetyStatus(SafetyStatus.UNVERIFIED_UNSAFE);

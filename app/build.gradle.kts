@@ -16,6 +16,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
@@ -23,6 +24,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
+
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -30,6 +32,12 @@ android {
     }
     buildFeatures {
         viewBinding = true
+    }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
     }
 }
 
@@ -59,6 +67,12 @@ dependencies {
     implementation(libs.glide)
     implementation(libs.play.services.analytics)
     testImplementation(libs.junit)
+    testImplementation(libs.core)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.mockk)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
@@ -75,5 +89,17 @@ dependencies {
 
     // MlKit Barcode Scanner: Required for QR functions
     implementation(libs.mlkit.barcode)
+
+    // Android Instrumented Testing
+    androidTestImplementation(libs.core)
+    androidTestImplementation(libs.runner)
+    androidTestImplementation(libs.rules)
+    androidTestImplementation(libs.truth)
+    androidTestImplementation(libs.espresso.contrib)
+    androidTestImplementation(libs.espresso.intents)
+    androidTestImplementation(libs.espresso.accessibility)
+    androidTestImplementation(libs.espresso.web)
+    androidTestImplementation(libs.idling.concurrent)
+    androidTestImplementation(libs.espresso.idling.resource)
 
 }
